@@ -15,8 +15,8 @@ function ModalUserRegister(props:any) {
       props.setIsModalOpen(false)
       setRegisterUser(false)
       notification.success({
-        message: 'Creado',
-        description:"El usuario se ha creado correctamente",
+        message: 'Tạo người dùng',
+        description:"Người dùng đã được tạo thành công",
       });
     }).catch((err:any)=>{
       setRegisterUser(false)
@@ -34,7 +34,7 @@ function ModalUserRegister(props:any) {
 
   return (
     <div className="">
-      <Spin tip="Estamos generando los partidos para tu usuario...." spinning={registeredUser}>
+      <Spin tip="Đang tạo người dùng...." spinning={registeredUser}>
         
         <Form
           name="basic"
@@ -45,48 +45,46 @@ function ModalUserRegister(props:any) {
           layout="vertical"
         >
           <Form.Item
-            label="Nombres"
+            label="Tên"
             name="names"
             rules={[
                 {
                 required: true,
-                message: 'Introduzca su nombre',
+                message: 'Điền tên của bạn',
                 },
-                { type: 'string', min: 3,message:"El nombre debe tener como minimo 3 caracteres alfabeticos"}, 
-                { type: 'string', max: 20,message:"El nombre debe tener como maximo 20 caracteres alfabeticos"}, 
-                { pattern:/^[a-zA-ZÀ-ÿ \\u00f1 \\u00d1 \\s]+$/,message:"El nombre debe estar compuesto solo de caracteres alfabeticos"}
+                { type: 'string', min: 3,message:"Tên phải có ít nhất 3 ký tự chữ cái"}, 
+                { type: 'string', max: 20,message:"Tên phải có tối đa 20 ký tự chữ cái"}, 
 
             ]}
             >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Apellidos"
+            label="Họ"
             name="surnames"
             rules={[
               {
               required: true,
-              message: 'Introduzca sus apellidos',
+              message: 'Điền họ của bạn',
               },
-              { type: 'string', min: 3,message:"El apellido debe tener como minimo 3 caracteres alfabeticos"}, 
-              { type: 'string', max: 30,message:"El apellido debe tener como maximo 30 caracteres alfabeticos"}, 
-              { pattern:/^[a-zA-ZÀ-ÿ \\u00f1 \\u00d1 \\s]+$/,message:"El apellido debe estar compuesto solo de caracteres alfabeticos"}
+              { type: 'string', min: 3,message:"Họ phải có ít nhất 3 ký tự chữ cái"}, 
+              { type: 'string', max: 30,message:"Họ phải có tối đa 30 ký tự chữ cái"}, 
 
           ]}
             >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Documento"
+            label="Số điện thoại"
             name="document"
             rules={[
               {
               required: true,
-              message: 'Introduzca su documento de identificacion',
+              message: 'Nhập số điện thoại của bạn',
               },
-              { type: 'string', min: 3,message:"Debe tener como minimo 3 caracteres numericos"}, 
-              { type: 'string', max: 10,message:"Debe tener como maximo 10 caracteres numericos"}, 
-              { pattern:/^[1-9]{1}[0-9]{5,9}$/,message:"Debe estar compuesto solo de caracteres numericos"}
+              { type: 'string', min: 3,message:"Số điện thoại ít nhất 3 số"}, 
+              { type: 'string', max: 10,message:"Số điện thoại nhiều nhất 10 số"}, 
+              { pattern:/^[0-9]{1}[0-9]{5,9}$/,message:"Chỉ được bao gồm các ký tự số"}
 
           ]}
           >
@@ -94,16 +92,16 @@ function ModalUserRegister(props:any) {
           </Form.Item>
 
           <Form.Item
-            label="Contraseña"
+            label="Mật khẩu"
             name="password"
             rules={[
               {
               required: true,
-              message: 'Introduzca una contraseña segura',
+              message: 'Nhập mật khẩu an toàn',
               },
-              { type: 'string', min: 8,message:" La contraseña debe tener como minimo 8 caracteres"}, 
-              { type: 'string', max: 30,message:"La contraseña debe tener como maximo 30 caracteres "}, 
-              { pattern:/^[a-zA-ZÀ-ÿ \\u00f1 \\u00d1 \\s 0-9]+$/,message:"La contraseña no puede tener caracteres especiales"}
+              { type: 'string', min: 8,message:" Mật khẩu phải có ít nhất 8 ký tự"}, 
+              { type: 'string', max: 30,message:"Mật khẩu phải tối đa 30 ký tự"}, 
+              { pattern:/^[a-zA-ZÀ-ÿ \\u00f1 \\u00d1 \\s 0-9]+$/,message:"Mật khẩu không được có ký tự đặc biệt"}
 
           ]}
           >
@@ -111,7 +109,7 @@ function ModalUserRegister(props:any) {
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Registrar Usuario
+              Đăng ký
             </Button>
           </Form.Item>
         </Form>

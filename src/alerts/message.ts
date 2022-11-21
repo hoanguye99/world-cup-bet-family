@@ -1,22 +1,18 @@
 
 const ERRORS:any = {
-    40001: 'Usuario o contraseña invalido',
-    40003: 'El usuario ya existe',
-    42301: 'El partido ya inicio y no es posible modificarlo'
+    40001: 'Sai username hoặc password',
+    40003: 'Người dùng đã tồn tại',
+    42301: 'Trận đấu đã bắt đầu và không thể sửa dữ liệu'
 }
 
 function getErrorMessage(error:any) {
     if (!ERRORS[error.code]) {
-        return 'Error en la operación'
+        return 'Đã có lỗi xảy ra'
     }
 
     if (error.code == 40002) {
         const fields = getErrorFields(error.message)
         let message = ERRORS[error.code]
-        if (fields.length > 1) {
-            message.replace('el', 'los')
-            message.replace('campo', 'campos')
-        }
         return `${message} ${fields.join(', ')}`
     }
     return ERRORS[error.code]

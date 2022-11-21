@@ -38,7 +38,7 @@ function LoginPage() {
     <div className="login">
       <img src="https://q22b2ctemplates.blob.core.windows.net/dev/images/q22.svg" className="img-logo-login" alt="" />
       <div className="form-login">
-        <h1>Ingresa con tu documento de identidad</h1>
+        <h1>FIS ESS 2022 World Cup</h1>
         <Form
           name="basic"
           labelCol={{
@@ -53,12 +53,12 @@ function LoginPage() {
           autoComplete="off"
         >
           <Form.Item
-            label="Usuario"
+            label="SĐT"
             name="document"
             rules={[
               {
                 required: true,
-                message: 'Introduzca un usuario',
+                message: 'Nhật số điện thoại',
               },
             ]}
           >
@@ -66,12 +66,12 @@ function LoginPage() {
           </Form.Item>
 
           <Form.Item
-            label="Contraseña"
+            label="Mật khẩu TK"
             name="password"
             rules={[
               {
                 required: true,
-                message: 'Introduzca una contraseña',
+                message: 'Nhập mật khẩu',
               },
             ]}
           >
@@ -79,18 +79,18 @@ function LoginPage() {
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Ingresar
+              Đăng nhập
             </Button>
 
 
             <Button type="link" onClick={()=>setIsModalOpen(true)}>
-              Registrarse
+              Đăng ký
             </Button>
           </Form.Item>
         </Form>
 
       </div>
-      <Modal footer={[]} title="Detalle del partido" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal footer={[]} title="Chi tiết trận đấu" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <ModalUserRegister setIsModalOpen={setIsModalOpen}/>
       </Modal>
     </div>

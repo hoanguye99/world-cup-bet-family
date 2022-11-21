@@ -12,7 +12,7 @@ function AllMatches(props:any) {
 
     const columns = [
         {
-          title: "Equipo Local",
+          title: "Đội nhà",
           dataIndex: '',
           key: 'local',
           render: (text:any) => 
@@ -41,7 +41,7 @@ function AllMatches(props:any) {
           </>
         },
         {
-          title: "Equipo Visita",
+          title: "Đội khách",
           dataIndex: '',
           key: 'visitor',
           render: (text:any) =>
@@ -72,10 +72,10 @@ function AllMatches(props:any) {
           </> 
         },
         {
-          title: "Fecha",
+          title: "Ngày giờ",
           dataIndex: 'date',
           key: 'date',
-          render: (text:any) =><p>{new Date(text).toLocaleString("es-CO",{weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour:'2-digit'})}</p>
+          render: (text:any) =><p>{new Date(text).toLocaleString("vi",{weekday: 'long',  month: 'long', day: 'numeric',hour:'numeric', minute:'numeric'})}</p>
         },
       ];
 

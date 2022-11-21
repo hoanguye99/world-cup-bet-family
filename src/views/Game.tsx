@@ -49,32 +49,32 @@ function Game() {
   });
 
   const items = [
-    { label: 'Grupo A', key: 'A', children: <div className='matches'>{listMatches}</div> }, // remember to pass the key prop
-    { label: 'Grupo B', key: 'B', children: <div className='matches'>{listMatches}</div> },
-    { label: 'Grupo C', key: 'C', children: <div className='matches'>{listMatches}</div> },
-    { label: 'Grupo D', key: 'D', children: <div className='matches'>{listMatches}</div> },
-    { label: 'Grupo E', key: 'E', children: <div className='matches'>{listMatches}</div> },
-    { label: 'Grupo F', key: 'F', children: <div className='matches'>{listMatches}</div> },
-    { label: 'Grupo G', key: 'G', children: <div className='matches'>{listMatches}</div> },
-    { label: 'Grupo H', key: 'H', children: <div className='matches'>{listMatches}</div> },
-    { label: 'Todos los partidos', key: 'all', children: <div className='matches'><AllMatches  service={service}/></div> },
+    { label: 'Bảng A', key: 'A', children: <div className='matches'>{listMatches}</div> }, // remember to pass the key prop
+    { label: 'Bảng B', key: 'B', children: <div className='matches'>{listMatches}</div> },
+    { label: 'Bảng C', key: 'C', children: <div className='matches'>{listMatches}</div> },
+    { label: 'Bảng D', key: 'D', children: <div className='matches'>{listMatches}</div> },
+    { label: 'Bảng E', key: 'E', children: <div className='matches'>{listMatches}</div> },
+    { label: 'Bảng F', key: 'F', children: <div className='matches'>{listMatches}</div> },
+    { label: 'Bảng G', key: 'G', children: <div className='matches'>{listMatches}</div> },
+    { label: 'Bảng H', key: 'H', children: <div className='matches'>{listMatches}</div> },
+    { label: 'Tất cả các trận', key: 'all', children: <div className='matches'><AllMatches  service={service}/></div> },
 
   ];
   const tabsRank=[
-    { label: 'Fifa', key: 'fifa', children: <FifaRank teams={teams} /> }, // remember to pass the key prop
-    { label: 'Participantes', key: 'players', children: <UsersRank service={service}/>
-    },
+    { label: 'Bet thủ', key: 'players', children: <UsersRank service={service}/>},
+    { label: 'FIFA', key: 'fifa', children: <FifaRank teams={teams} /> }, // remember to pass the key prop
+    
 
   ]
   const itemsB = [
-    { label: 'Fase de grupos', key: 'groups', children: <Tabs destroyInactiveTabPane={true} className='tabs-group' onChange={onChangeTabGroup} items={items}/> }, // remember to pass the key prop
-    { label: 'Fase Final', key: 'Finals', children: 
+    { label: 'Vòng bảng', key: 'groups', children: <Tabs destroyInactiveTabPane={true} className='tabs-group' onChange={onChangeTabGroup} items={items}/> }, // remember to pass the key prop
+    { label: 'Vòng loại', key: 'Finals', children: 
       <div className='in-develop'>
-        <h1>En desarrollo</h1>
+        <h1>Đang phát triển</h1>
         <img src="https://media4.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif" alt="" />
       </div>  
     },
-    { label: 'Clasificacion', key: 'clasifieds', children: <Tabs className='tabs-group' onChange={onChangeRank} items={tabsRank}/>},
+    { label: 'Xếp hạng', key: 'clasifieds', children: <Tabs className='tabs-group' onChange={onChangeRank} items={tabsRank}/>},
 
   ];
 
@@ -85,8 +85,8 @@ function Game() {
   return (
     <div className="App">
       <Header className='content-header'>
-        <h1>{auth.names}</h1>
-        <h2>{auth.score} puntos</h2>
+        <h1>FIS ESS {auth.names}</h1>
+        <h2>{auth.score} điểm</h2>
       </Header>
       <img src={logoworldcup} alt="" className='img-logo'/>
       <div className='container-podium-rank'>

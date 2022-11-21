@@ -1,14 +1,14 @@
 @font-face {
-  font-family: 'Qatar2022';
-  src: local('Qatar2022'), url(./assets/fonts/Qatar2022-Bold.otf) format('truetype');
+  font-family: 'Nunito-Regular';
+  src: local('Nunito-Regular'), url(./assets/fonts/Nunito-Regular.ttf) format('truetype');
 }
 @font-face {
-  font-family: 'Qatar2022-Arabic-Medium';
-  src: local('Qatar2022-Arabic-Medium'), url(./assets/fonts/Qatar2022Arabic-Medium.otf) format('truetype');
+  font-family: 'Nunito-Medium';
+  src: local('Nunito-Medium'), url(./assets/fonts/Nunito-Medium.ttf) format('truetype');
 }
 @font-face {
-  font-family: 'Qatar2022-Heavy';
-  src: local('Qatar2022-Heavy'), url(./assets/fonts/Qatar2022-Heavy.otf) format('truetype');
+  font-family: 'Nunito-SemiBold';
+  src: local('Nunito-SemiBold'), url(./assets/fonts/Nunito-SemiBold.ttf) format('truetype');
 }
 .login{
   min-height: 100vh;
@@ -17,14 +17,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  font-family: Qatar2022;
+  font-family: Nunito-Regular;
 
 }
 .img-logo-login{
   width: 30%;
 }
 .login h1{
-  font-family: Qatar2022-Heavy;
+  font-family: Nunito-SemiBold;
   color: #550065;
   font-size: 2rem;
 }
@@ -40,7 +40,7 @@
   background-color: #020f2a;
   min-width: 320px;
   
-  font-family: Qatar2022;
+  font-family: Nunito-Regular;
 }
 .content-header{
   background: #8b1638;
@@ -173,7 +173,7 @@
   font-size: 23px;
 }
 .ant-modal-content{
-  font-family: Qatar2022 !important;
+  font-family: Nunito-Regular !important;
 }
 .ant-modal-content .modal-my-result{
   width: 60%;

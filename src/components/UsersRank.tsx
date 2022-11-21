@@ -8,13 +8,13 @@ function UsersRank(props:any) {
   const [data,setData]= useState()
     const columns = [
         {
-          title : 'Nombre',
+          title : 'Bét thủ',
           dataIndex: 'names',
           key: 'names',
           render: (text:any) => <a>{text}</a>
         },
         { 
-          title:"Puntaje",
+          title:"Điểm",
           dataIndex: 'score',
           key: 'score',
           render: (text:any) => <a>{text}</a>

@@ -9,7 +9,7 @@ function showError(response:any) {
             const message = getErrorMessage(data.error)
             return message
         } else {
-            return "error en la operacion"
+            return "Đã có lỗi xảy ra"
             // toast.error('Error en la operación')
         }
     }
