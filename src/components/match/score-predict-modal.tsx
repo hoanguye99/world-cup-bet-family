@@ -10,6 +10,7 @@ import {
 } from '../../services/user-matches.services';
 import { useQueryClient } from '@tanstack/react-query';
 import { UseQueryResult } from '@tanstack/react-query';
+import { debounce } from "lodash"
 // import { useContext } from 'react';
 // import { AuthContext } from '../../context/AuthContext';
 
@@ -160,11 +161,11 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
         <InputNumber
           size="large"
           min={0}
-          max={props.authCurrentScore}
+          max={1000000}
           defaultValue={props.matchPrediction?.bets?.scoreBet?.betAmount}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
-          disabled={new Date() > new Date(props.match.date)}
-          onChange={(ev: any) => {
+          disabled={new Date() > new Date(props.match.date) ||  (props.authCurrentScore !== undefined && props.authCurrentScore < 0)}
+          onChange={debounce((ev: any) => {
             const payload = {
               match_id: props.match._id,
               localBet: props.matchPrediction?.bets?.scoreBet?.localBet ?? null,
@@ -185,7 +186,7 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
                   message: 'Error',
                 });
               });
-          }}
+          }, 700)}
         />
       </div>
       <h1 className="mt-6">Dự đoán ESS</h1>
