@@ -45,7 +45,7 @@ function ModalUserRegister(props:any) {
           layout="vertical"
         >
           <Form.Item
-            label="Tên"
+            label="Tên hiển thị | VD: HoangND25"
             name="names"
             rules={[
                 {
@@ -60,7 +60,7 @@ function ModalUserRegister(props:any) {
             <Input />
           </Form.Item>
           <Form.Item
-            label="Họ"
+            label="Họ | VD: Nguyen"
             name="surnames"
             rules={[
               {
@@ -75,7 +75,7 @@ function ModalUserRegister(props:any) {
             <Input />
           </Form.Item>
           <Form.Item
-            label="Số điện thoại"
+            label="Số điện thoại | Được dùng để đăng nhập"
             name="document"
             rules={[
               {

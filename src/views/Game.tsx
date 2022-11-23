@@ -10,17 +10,24 @@ import logoworldcup from '../assets/world-cup-2022-logo.svg';
 import { AuthContext } from '../context/AuthContext';
 import AllMatches from '../components/AllMatches';
 import UsersRank from '../components/UsersRank';
-import { useGetAllUser, useGetPredictionsUser } from '../hooks/query/user-matches';
+import { useQueryClient } from '@tanstack/react-query';
+import {
+  useGetAllUser,
+  useGetPredictionsUser,
+} from '../hooks/query/user-matches';
 import { Footer } from './footer';
 
 const { Header } = Layout;
 function Game() {
   const { auth } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
   const getPredictionsUser = useGetPredictionsUser(auth.token, auth.document);
-  const getAllUser = useGetAllUser(auth.token)
+  const getAllUser = useGetAllUser(auth.token);
 
-  const authCurrentScore = getAllUser.data?.find(obj => obj._id === auth.document)?.score
+  const authCurrentScore = getAllUser.data?.find(
+    (obj) => obj._id === auth.document
+  )?.score;
 
   const [service, setService] = useState(new teamsService());
   const [teams, setTeams] = useState();
@@ -51,7 +58,15 @@ function Game() {
 
   const listMatches = matches.map((match: any, index: any) => {
     return (
-      <Match forceRender={true} key={index} match={match} service={service} getPredictionsUser={getPredictionsUser} getAllUser={getAllUser} authCurrentScore={authCurrentScore} />
+      <Match
+        forceRender={true}
+        key={index}
+        match={match}
+        service={service}
+        getPredictionsUser={getPredictionsUser}
+        getAllUser={getAllUser}
+        authCurrentScore={authCurrentScore}
+      />
     );
   });
 
@@ -157,7 +172,25 @@ function Game() {
     <div className="App">
       <Header className="content-header">
         <h1>FIS ESS {auth.names}</h1>
-        <h2>{authCurrentScore} điểm</h2>
+        <div className="flex gap-8">
+          <h2>{authCurrentScore} điểm</h2>
+          <button onClick={() => queryClient.refetchQueries()} className="bg-transparent border-0 cursor-pointer text-white mt-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+              />
+            </svg>
+          </button>
+        </div>
       </Header>
       <img src={logoworldcup} alt="" className="img-logo" />
       <div className="container-podium-rank">

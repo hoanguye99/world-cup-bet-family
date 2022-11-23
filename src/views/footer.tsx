@@ -8,7 +8,7 @@ export const Footer = () => {
           </div>
           <div className="lg:max-w-sm">
             <p className="mt-8 text-sm text-white/80">
-            FPT.EageEye SOC is a digital solution for monitoring, detecting and handling cyber security vulnerabilities 24/7, detecting attacks and intrusions: ransomeware, insider threat, APT.
+            Tài chính vững mạnh. Bảo mật tuyệt đối. Cá cược trên tỉ số và kết quả thắng thua minh bạch và uy tín. Hãy chơi hết mình nào các bet thủ !! 
             </p>
           </div>
         </div>
@@ -17,25 +17,25 @@ export const Footer = () => {
             Top Up Service
           </p>
           <p className="pb-3 tracking-wide text-white ">
-            Nguyễn Đình Hoàng
+            Thủ quỹ Nguyễn Thùy Linh
           </p>
           <div className="flex">
-            <p className="mr-1 text-white">MOMO:</p>
+            <p className="mr-1 text-white">Techcombank:</p>
+            <a
+              className="transition-colors duration-300"
+            >
+              1903 7667 4220 10
+            </a>
+          </div>
+          <div className="flex">
+            <p className="mr-1 text-white">SĐT:</p>
             <a
               href="tel:850-123-5021"
               aria-label="Our phone"
               title="Our phone"
               className="transition-colors duration-300"
             >
-              086-558-1392
-            </a>
-          </div>
-          <div className="flex">
-            <p className="mr-1 text-white">TPBank:</p>
-            <a
-              className="transition-colors duration-300"
-            >
-              0865581392
+              091-949-6558
             </a>
           </div>
         </div>

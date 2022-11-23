@@ -186,7 +186,7 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
                   message: 'Error',
                 });
               });
-          }, 700)}
+          }, 400)}
         />
       </div>
       <h1 className="mt-6">Dự đoán ESS</h1>

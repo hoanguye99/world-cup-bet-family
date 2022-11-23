@@ -90,7 +90,7 @@ function LoginPage() {
         </Form>
 
       </div>
-      <Modal footer={[]} title="Chi tiết trận đấu" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal footer={[]} title="Đăng ký tài khoản" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <ModalUserRegister setIsModalOpen={setIsModalOpen}/>
       </Modal>
     </div>
