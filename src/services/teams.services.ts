@@ -58,6 +58,19 @@ export class teamsService {
       }
     })
   }
+  async betWinner(token:string,payload:any){
+    const data = await this.Api.post(`/api/v1/bet/winner`,
+    {
+      match_id: payload.match_id,
+      value : payload.value,
+      betAmount: payload.betAmount
+    },
+    {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+  }
   async getRankUsers(token:string){
     const data = await this.Api.get(`/api/v1/users`,
     {

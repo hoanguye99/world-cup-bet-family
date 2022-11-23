@@ -20,6 +20,8 @@ function Game() {
   const getPredictionsUser = useGetPredictionsUser(auth.token, auth.document);
   const getAllUser = useGetAllUser(auth.token)
 
+  const authCurrentScore = getAllUser.data?.find(obj => obj._id === auth.document)?.score
+
   const [service, setService] = useState(new teamsService());
   const [teams, setTeams] = useState();
   const [teamsSelect, setTeamsSelect] = useState();
@@ -49,7 +51,7 @@ function Game() {
 
   const listMatches = matches.map((match: any, index: any) => {
     return (
-      <Match forceRender={true} key={index} match={match} service={service} getPredictionsUser={getPredictionsUser} getAllUser={getAllUser} />
+      <Match forceRender={true} key={index} match={match} service={service} getPredictionsUser={getPredictionsUser} getAllUser={getAllUser} authCurrentScore={authCurrentScore} />
     );
   });
 
@@ -155,7 +157,7 @@ function Game() {
     <div className="App">
       <Header className="content-header">
         <h1>FIS ESS {auth.names}</h1>
-        <h2>{auth.score} điểm</h2>
+        <h2>{authCurrentScore} điểm</h2>
       </Header>
       <img src={logoworldcup} alt="" className="img-logo" />
       <div className="container-podium-rank">

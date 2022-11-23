@@ -4,7 +4,12 @@ import {
   useGetPredictionsMatch,
   userMatchesKeys,
 } from '../../hooks/query/user-matches';
-import { UserPrediction, UserShort } from '../../services/user-matches.services';
+import type { RadioChangeEvent } from 'antd';
+import { Radio } from 'antd';
+import {
+  UserPrediction,
+  UserShort,
+} from '../../services/user-matches.services';
 import { useQueryClient } from '@tanstack/react-query';
 import { UseQueryResult } from '@tanstack/react-query';
 
@@ -15,20 +20,39 @@ interface WinPredictModalProps {
   matchPrediction: UserPrediction | undefined;
   showModal: boolean;
   closeModal: () => void;
-  getAllUser: UseQueryResult<UserShort[], unknown>
-  getPredictionsMatch: UseQueryResult<UserPrediction[], unknown>
+  getAllUser: UseQueryResult<UserShort[], unknown>;
+  getPredictionsMatch: UseQueryResult<UserPrediction[], unknown>;
+  authCurrentScore: number | undefined
 }
 
 const WinPredictModal = (props: WinPredictModalProps) => {
-
-  const dataSource = props.getPredictionsMatch.data?.map((userPrediction) => ({
-    names: props.getAllUser.data?.find((obj) => obj._id === userPrediction.user_id)
-      ?.names,
-    score: `${userPrediction.bets.scoreBet.localBet} - ${userPrediction.bets.scoreBet.visitorBet}`,
-    value: userPrediction.bets.scoreBet.betAmount,
-  }));
-
   const queryClient = useQueryClient();
+
+  const dataSource = props.getPredictionsMatch.data
+    ?.filter((userPrediction) => userPrediction.bets?.winBet?.value)
+    .map((userPrediction) => {
+      let teamName;
+      switch (userPrediction.bets?.winBet?.value) {
+        case 'local':
+          teamName = props.match.local_team.name;
+          break;
+        case 'visitor':
+          teamName = props.match.visiting_team.name;
+          break;
+        case 'tie':
+          teamName = 'Hòa';
+          // code block
+          break;
+      }
+
+      return {
+        names: props.getAllUser.data?.find(
+          (obj) => obj._id === userPrediction.user_id
+        )?.names,
+        result: teamName,
+        value: userPrediction.bets?.winBet?.betAmount,
+      };
+    });
 
   const columns = [
     {
@@ -37,9 +61,9 @@ const WinPredictModal = (props: WinPredictModalProps) => {
       key: 'names',
     },
     {
-      title: 'Tỉ số',
-      dataIndex: 'score',
-      key: 'score',
+      title: 'Kết quả',
+      dataIndex: 'result',
+      key: 'result',
     },
     {
       title: 'Cược',
@@ -53,6 +77,29 @@ const WinPredictModal = (props: WinPredictModalProps) => {
     // },
   ];
 
+  const onChange = (e: RadioChangeEvent) => {
+    console.log('radio checked', e.target.value);
+    const payload = {
+      match_id: props.match._id,
+      value: e.target.value,
+      betAmount: props.matchPrediction?.bets?.winBet?.betAmount ?? null,
+    };
+    props.service
+      .betWinner(props.token, payload)
+      .then((res: any) => {
+        queryClient.invalidateQueries(
+          userMatchesKeys.getPredictionsMatch(props.match._id)
+        );
+        queryClient.invalidateQueries(userMatchesKeys.getAllUser());
+        queryClient.invalidateQueries(userMatchesKeys.getPredictionsUser());
+      })
+      .catch((err: any) => {
+        notification.error({
+          message: 'Error',
+        });
+      });
+  };
+
   return (
     <Modal
       title="Dự đoán kết quả"
@@ -61,68 +108,46 @@ const WinPredictModal = (props: WinPredictModalProps) => {
       onCancel={props.closeModal}
     >
       <h1>Dự đoán của tôi</h1>
-      <div className="modal-my-result">
-        <img src={props.match.local_team.image} alt="" />
-        <h2>{props.match.local_team.name}</h2>
-        <InputNumber
-          size="middle"
-          min={0}
-          max={100000}
-          defaultValue={props.matchPrediction?.bets.scoreBet.localBet}
-          // value={matchPrediction?.bets.scoreBet.localBet}
-          disabled={new Date() > new Date(props.match.date)}
-          onChange={(ev: any) => {
-            const payload = {
-              match_id: props.match._id,
-              localBet: ev,
-              visitorBet: props.matchPrediction?.bets.scoreBet.visitorBet,
-              betAmount: props.matchPrediction?.bets.scoreBet.betAmount,
-            };
-            props.service
-              .betScore(props.token, payload)
-              .then((res: any) => {
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsMatch(props.match._id));
-                queryClient.invalidateQueries(userMatchesKeys.getAllUser());
-              })
-              .catch((err: any) => {
-                notification.error({
-                  message: 'Error',
-                });
-              });
-          }}
-        />
-      </div>
-      <div className="modal-my-result">
-        <img src={props.match.visiting_team.image} alt="" />
-        <h2> {props.match.visiting_team.name} </h2>
-        <InputNumber
-          size="middle"
-          min={0}
-          max={100000}
-          defaultValue={props.matchPrediction?.bets.scoreBet.visitorBet}
-          // value={matchPrediction?.bets.scoreBet.visitorBet}
-          disabled={new Date() > new Date(props.match.date)}
-          onChange={(ev: any) => {
-            const payload = {
-              match_id: props.match._id,
-              localBet: props.matchPrediction?.bets.scoreBet.localBet,
-              visitorBet: ev,
-              betAmount: props.matchPrediction?.bets.scoreBet.betAmount,
-            };
-            props.service
-              .betScore(props.token, payload)
-              .then((res: any) => {
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsMatch(props.match._id));
-                queryClient.invalidateQueries(userMatchesKeys.getAllUser());
-              })
-              .catch((err: any) => {
-                notification.error({
-                  message: 'Error',
-                });
-              });
-          }}
-        />
-      </div>
+      <Radio.Group
+        className="w-full flex flex-col items-center gap-6"
+        onChange={onChange}
+        disabled={new Date() > new Date(props.match.date)}
+        defaultValue={props.matchPrediction?.bets?.winBet?.value}
+      >
+        <Radio className="flex items-center gap-5" value={'local'}>
+          <div className="flex items-center gap-5">
+            <img src={props.match.local_team.image} alt="" />
+            <h2>{props.match.local_team.name}</h2>
+          </div>
+        </Radio>
+
+        <Radio className="flex items-center gap-5" value={'visitor'}>
+          <div className="flex items-center gap-5">
+            <img src={props.match.visiting_team.image} alt="" />
+            <h2> {props.match.visiting_team.name} </h2>
+          </div>
+        </Radio>
+        <Radio className="flex items-center gap-5" value={'tie'}>
+          <div className="flex items-center gap-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-9 h-9 text-gray-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z"
+              />
+            </svg>
+
+            <h2> Hòa </h2>
+          </div>
+        </Radio>
+      </Radio.Group>
       <div className="modal-my-result">
         <h2 className="flex items-center gap-5">
           <svg
@@ -144,22 +169,24 @@ const WinPredictModal = (props: WinPredictModalProps) => {
         <InputNumber
           size="large"
           min={0}
-          max={1000000}
-          defaultValue={props.matchPrediction?.bets.scoreBet.betAmount}
+          max={props.authCurrentScore}
+          defaultValue={props.matchPrediction?.bets?.winBet?.betAmount}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
           disabled={new Date() > new Date(props.match.date)}
           onChange={(ev: any) => {
             const payload = {
               match_id: props.match._id,
-              localBet: props.matchPrediction?.bets.scoreBet.localBet,
-              visitorBet: props.matchPrediction?.bets.scoreBet.visitorBet,
+              value: props.matchPrediction?.bets?.winBet?.value ?? null,
               betAmount: ev,
             };
             props.service
-              .betScore(props.token, payload)
+              .betWinner(props.token, payload)
               .then((res: any) => {
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsMatch(props.match._id));
+                queryClient.invalidateQueries(
+                  userMatchesKeys.getPredictionsMatch(props.match._id)
+                );
                 queryClient.invalidateQueries(userMatchesKeys.getAllUser());
+                queryClient.invalidateQueries(userMatchesKeys.getPredictionsUser());
               })
               .catch((err: any) => {
                 notification.error({

@@ -4,7 +4,10 @@ import {
   useGetPredictionsMatch,
   userMatchesKeys,
 } from '../../hooks/query/user-matches';
-import { UserPrediction, UserShort } from '../../services/user-matches.services';
+import {
+  UserPrediction,
+  UserShort,
+} from '../../services/user-matches.services';
 import { useQueryClient } from '@tanstack/react-query';
 import { UseQueryResult } from '@tanstack/react-query';
 // import { useContext } from 'react';
@@ -17,20 +20,23 @@ interface ScorePredictModalProps {
   matchPrediction: UserPrediction | undefined;
   showModal: boolean;
   closeModal: () => void;
-  getAllUser: UseQueryResult<UserShort[], unknown>
-  getPredictionsMatch: UseQueryResult<UserPrediction[], unknown>
-
+  getAllUser: UseQueryResult<UserShort[], unknown>;
+  getPredictionsMatch: UseQueryResult<UserPrediction[], unknown>;
+  authCurrentScore: number | undefined;
 }
 
 const ScorePredictModal = (props: ScorePredictModalProps) => {
   // const { auth } = useContext(AuthContext);
 
-  const dataSource = props.getPredictionsMatch.data?.map((userPrediction) => ({
-    names: props.getAllUser.data?.find((obj) => obj._id === userPrediction.user_id)
-      ?.names,
-    score: `${userPrediction.bets.scoreBet.localBet} - ${userPrediction.bets.scoreBet.visitorBet}`,
-    value: userPrediction.bets.scoreBet.betAmount,
-  }));
+  const dataSource = props.getPredictionsMatch.data
+    ?.filter((userPrediction) => userPrediction.bets?.scoreBet?.localBet)
+    .map((userPrediction) => ({
+      names: props.getAllUser.data?.find(
+        (obj) => obj._id === userPrediction.user_id
+      )?.names,
+      score: `${userPrediction.bets.scoreBet.localBet} - ${userPrediction.bets.scoreBet.visitorBet}`,
+      value: userPrediction.bets.scoreBet.betAmount,
+    }));
 
   const queryClient = useQueryClient();
 
@@ -72,21 +78,24 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
           size="middle"
           min={0}
           max={100000}
-          defaultValue={props.matchPrediction?.bets.scoreBet.localBet}
+          defaultValue={props.matchPrediction?.bets?.scoreBet?.localBet}
           // value={matchPrediction?.bets.scoreBet.localBet}
           disabled={new Date() > new Date(props.match.date)}
           onChange={(ev: any) => {
             const payload = {
               match_id: props.match._id,
               localBet: ev,
-              visitorBet: props.matchPrediction?.bets.scoreBet.visitorBet,
-              betAmount: props.matchPrediction?.bets.scoreBet.betAmount,
+              visitorBet: props.matchPrediction?.bets?.scoreBet?.visitorBet ?? null,
+              betAmount: props.matchPrediction?.bets?.scoreBet?.betAmount ?? null,
             };
             props.service
               .betScore(props.token, payload)
               .then((res: any) => {
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsMatch(props.match._id));
+                queryClient.invalidateQueries(
+                  userMatchesKeys.getPredictionsMatch(props.match._id)
+                );
                 queryClient.invalidateQueries(userMatchesKeys.getAllUser());
+                queryClient.invalidateQueries(userMatchesKeys.getPredictionsUser());
               })
               .catch((err: any) => {
                 notification.error({
@@ -103,21 +112,24 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
           size="middle"
           min={0}
           max={100000}
-          defaultValue={props.matchPrediction?.bets.scoreBet.visitorBet}
+          defaultValue={props.matchPrediction?.bets?.scoreBet?.visitorBet}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
           disabled={new Date() > new Date(props.match.date)}
           onChange={(ev: any) => {
             const payload = {
               match_id: props.match._id,
-              localBet: props.matchPrediction?.bets.scoreBet.localBet,
+              localBet: props.matchPrediction?.bets?.scoreBet?.localBet ?? null,
               visitorBet: ev,
-              betAmount: props.matchPrediction?.bets.scoreBet.betAmount,
+              betAmount: props.matchPrediction?.bets?.scoreBet?.betAmount ?? null,
             };
             props.service
               .betScore(props.token, payload)
               .then((res: any) => {
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsMatch(props.match._id));
+                queryClient.invalidateQueries(
+                  userMatchesKeys.getPredictionsMatch(props.match._id)
+                );
                 queryClient.invalidateQueries(userMatchesKeys.getAllUser());
+                queryClient.invalidateQueries(userMatchesKeys.getPredictionsUser());
               })
               .catch((err: any) => {
                 notification.error({
@@ -148,22 +160,25 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
         <InputNumber
           size="large"
           min={0}
-          max={1000000}
-          defaultValue={props.matchPrediction?.bets.scoreBet.betAmount}
+          max={props.authCurrentScore}
+          defaultValue={props.matchPrediction?.bets?.scoreBet?.betAmount}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
           disabled={new Date() > new Date(props.match.date)}
           onChange={(ev: any) => {
             const payload = {
               match_id: props.match._id,
-              localBet: props.matchPrediction?.bets.scoreBet.localBet,
-              visitorBet: props.matchPrediction?.bets.scoreBet.visitorBet,
+              localBet: props.matchPrediction?.bets?.scoreBet?.localBet ?? null,
+              visitorBet: props.matchPrediction?.bets?.scoreBet?.visitorBet ?? null,
               betAmount: ev,
             };
             props.service
               .betScore(props.token, payload)
               .then((res: any) => {
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsMatch(props.match._id));
+                queryClient.invalidateQueries(
+                  userMatchesKeys.getPredictionsMatch(props.match._id)
+                );
                 queryClient.invalidateQueries(userMatchesKeys.getAllUser());
+                queryClient.invalidateQueries(userMatchesKeys.getPredictionsUser());
               })
               .catch((err: any) => {
                 notification.error({

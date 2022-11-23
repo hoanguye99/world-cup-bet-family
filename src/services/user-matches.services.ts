@@ -17,7 +17,7 @@ export interface UserPrediction {
       betAmount: number;
     };
     winBet: {
-      winner: 'local' | 'visitor' | 'tie';
+      value: 'local' | 'visitor' | 'tie';
       betAmount: number;
     };
   };

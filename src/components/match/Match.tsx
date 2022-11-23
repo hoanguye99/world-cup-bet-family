@@ -15,6 +15,7 @@ interface MatchProps {
   match: any;
   forceRender: boolean;
   service: any;
+  authCurrentScore: number | undefined;
 }
 
 function Match(props: MatchProps) {
@@ -68,7 +69,7 @@ function Match(props: MatchProps) {
               </span>
             ) : (
               <span className="has_not_played">
-                {matchPrediction?.bets.scoreBet.localBet}
+                {matchPrediction?.bets?.scoreBet?.localBet}
               </span>
             )}
           </div>
@@ -82,7 +83,7 @@ function Match(props: MatchProps) {
               </span>
             ) : (
               <span className="has_not_played">
-                {matchPrediction?.bets.scoreBet.visitorBet}
+                {matchPrediction?.bets?.scoreBet?.visitorBet}
               </span>
             )}
           </div>
@@ -118,6 +119,7 @@ function Match(props: MatchProps) {
         closeModal={() => setShowScorePredictModal(false)}
         getAllUser={props.getAllUser}
         getPredictionsMatch={getPredictionsMatch}
+        authCurrentScore={props.authCurrentScore}
       />
       <WinPredictModal
         token={auth.token}
@@ -128,6 +130,7 @@ function Match(props: MatchProps) {
         closeModal={() => setShowWinPredictModal(false)}
         getAllUser={props.getAllUser}
         getPredictionsMatch={getPredictionsMatch}
+        authCurrentScore={props.authCurrentScore}
       />
     </>
   );

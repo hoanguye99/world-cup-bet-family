@@ -5,13 +5,13 @@ import userMatchesAPI from '../../services/user-matches.services'
 
 export const userMatchesKeys = {
   all: ['user-matches'] as const,
-  getPredictionsUser: (userId: string) => [...userMatchesKeys.all, 'getPredictionsUser', userId] as const,
+  getPredictionsUser: () => [...userMatchesKeys.all, 'getPredictionsUser'] as const,
   getPredictionsMatch: (matchId: string) => [...userMatchesKeys.all, 'getPredictionsMatch', matchId] as const,
   getAllUser: () => [...userMatchesKeys.all, 'getAllUser'],
 }
 
 export function useGetPredictionsUser(token : string, userId : string) {
-  return useQuery(userMatchesKeys.getPredictionsUser(userId), () =>
+  return useQuery(userMatchesKeys.getPredictionsUser(), () =>
     userMatchesAPI.getPredictionsUser(token)
   )
 }
