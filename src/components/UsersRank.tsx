@@ -2,10 +2,16 @@ import { Table } from 'antd'
 import 'antd/dist/antd.css'
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/AuthContext';
+import { UseQueryResult } from '@tanstack/react-query';
+import { UserShort } from '../services/user-matches.services';
 
-function UsersRank(props:any) {
+interface UsersRankProps {
+  getAllUser: UseQueryResult<UserShort[], unknown>
+}
+
+function UsersRank(props:UsersRankProps) {
   const {auth} = useContext(AuthContext);
-  const [data,setData]= useState()
+  const [data,setData]= useState<UserShort[] | undefined>(undefined)
     const columns = [
         {
           title : 'Bet thủ',
@@ -17,7 +23,7 @@ function UsersRank(props:any) {
           title:"Tích lũy",
           dataIndex: 'score',
           key: 'score',
-          render: (text:any) => <a>{text}</a>
+          render: (text:any) => <a>{text}</a>,
         },
         // {
         //   dataIndex: 'name',
@@ -26,13 +32,12 @@ function UsersRank(props:any) {
         // },
       ];
 
-  const getRankUser= async()=>{
-    const data = await props.service.getRankUsers(auth.token)
-    setData(data.sort((a:any,b:any)=> b.score - a.score))
-  }
-  useEffect(() => {
-    getRankUser()
-  }, [])
+      // setData(props.getAllUser.data.sort((a:any,b:any)=> b.score - a.score))
+      useEffect(() => {
+        if (props.getAllUser.data) {
+          setData(props.getAllUser.data.sort((a:any,b:any)=> b.score - a.score))
+        }
+      }, [props.getAllUser.data])
   
   return (
     <div className='container-fifa-rank'>

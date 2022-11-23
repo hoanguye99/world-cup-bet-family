@@ -125,7 +125,7 @@ function Game() {
     {
       label: 'Bet thủ',
       key: 'players',
-      children: <UsersRank service={service} />,
+      children: <UsersRank getAllUser={getAllUser} />,
     },
     { label: 'FIFA', key: 'fifa', children: <FifaRank teams={teams} /> }, // remember to pass the key prop
   ];

@@ -30,7 +30,7 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
   // const { auth } = useContext(AuthContext);
 
   const dataSource = props.getPredictionsMatch.data
-    ?.filter((userPrediction) => userPrediction.bets?.scoreBet?.localBet)
+    ?.filter((userPrediction) => userPrediction.bets?.scoreBet?.localBet || userPrediction.bets?.scoreBet?.visitorBet || userPrediction.bets?.scoreBet?.betAmount)
     .map((userPrediction) => ({
       names: props.getAllUser.data?.find(
         (obj) => obj._id === userPrediction.user_id

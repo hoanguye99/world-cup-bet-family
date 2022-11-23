@@ -31,7 +31,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
   const queryClient = useQueryClient();
 
   const dataSource = props.getPredictionsMatch.data
-    ?.filter((userPrediction) => userPrediction.bets?.winBet?.value)
+    ?.filter((userPrediction) => userPrediction.bets?.winBet?.value || userPrediction.bets?.winBet?.betAmount)
     .map((userPrediction) => {
       let teamName;
       switch (userPrediction.bets?.winBet?.value) {
