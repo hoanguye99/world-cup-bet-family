@@ -3,14 +3,15 @@ import { useContext, useEffect, useState } from 'react';
 import { Button, InputNumber, Modal, notification } from 'antd';
 import { AuthContext } from '../../context/AuthContext';
 import { showError } from '../../alerts';
-import { useGetPredictionsUser } from '../../hooks/query/user-matches';
-import { UserPrediction } from '../../services/user-matches.services';
+import { useGetAllUser, useGetPredictionsMatch, useGetPredictionsUser } from '../../hooks/query/user-matches';
+import { UserPrediction, UserShort } from '../../services/user-matches.services';
 import ScorePredictModal from './score-predict-modal';
 import WinPredictModal from './win-predict-modal';
 import { UseQueryResult } from '@tanstack/react-query';
 
 interface MatchProps {
   getPredictionsUser: UseQueryResult<UserPrediction[], unknown>;
+  getAllUser: UseQueryResult<UserShort[], unknown>
   match: any;
   forceRender: boolean;
   service: any;
@@ -21,6 +22,11 @@ function Match(props: MatchProps) {
 
   const matchPrediction = props.getPredictionsUser.data?.find(
     (match) => match.match_id === props.match._id
+  );
+
+  const getPredictionsMatch = useGetPredictionsMatch(
+    auth.token,
+    props.match._id
   );
 
   // const [visitorScore, setVisitorScore] = useState()
@@ -110,12 +116,18 @@ function Match(props: MatchProps) {
         matchPrediction={matchPrediction}
         showModal={showScorePredictModal}
         closeModal={() => setShowScorePredictModal(false)}
+        getAllUser={props.getAllUser}
+        getPredictionsMatch={getPredictionsMatch}
       />
       <WinPredictModal
+        token={auth.token}
+        service={props.service}
         match={props.match}
         matchPrediction={matchPrediction}
         showModal={showWinPredictModal}
         closeModal={() => setShowWinPredictModal(false)}
+        getAllUser={props.getAllUser}
+        getPredictionsMatch={getPredictionsMatch}
       />
     </>
   );

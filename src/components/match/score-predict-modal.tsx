@@ -4,8 +4,9 @@ import {
   useGetPredictionsMatch,
   userMatchesKeys,
 } from '../../hooks/query/user-matches';
-import { UserPrediction } from '../../services/user-matches.services';
+import { UserPrediction, UserShort } from '../../services/user-matches.services';
 import { useQueryClient } from '@tanstack/react-query';
+import { UseQueryResult } from '@tanstack/react-query';
 // import { useContext } from 'react';
 // import { AuthContext } from '../../context/AuthContext';
 
@@ -16,18 +17,16 @@ interface ScorePredictModalProps {
   matchPrediction: UserPrediction | undefined;
   showModal: boolean;
   closeModal: () => void;
+  getAllUser: UseQueryResult<UserShort[], unknown>
+  getPredictionsMatch: UseQueryResult<UserPrediction[], unknown>
+
 }
 
 const ScorePredictModal = (props: ScorePredictModalProps) => {
   // const { auth } = useContext(AuthContext);
-  const getPredictionsMatch = useGetPredictionsMatch(
-    props.token,
-    props.match._id
-  );
-  const getAllUser = useGetAllUser(props.token);
 
-  const dataSource = getPredictionsMatch.data?.map((userPrediction) => ({
-    names: getAllUser.data?.find((obj) => obj._id === userPrediction.user_id)
+  const dataSource = props.getPredictionsMatch.data?.map((userPrediction) => ({
+    names: props.getAllUser.data?.find((obj) => obj._id === userPrediction.user_id)
       ?.names,
     score: `${userPrediction.bets.scoreBet.localBet} - ${userPrediction.bets.scoreBet.visitorBet}`,
     value: userPrediction.bets.scoreBet.betAmount,

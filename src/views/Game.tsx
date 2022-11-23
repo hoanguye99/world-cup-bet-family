@@ -18,7 +18,7 @@ function Game() {
   const { auth } = useContext(AuthContext);
 
   const getPredictionsUser = useGetPredictionsUser(auth.token, auth.document);
-  useGetAllUser(auth.token)
+  const getAllUser = useGetAllUser(auth.token)
 
   const [service, setService] = useState(new teamsService());
   const [teams, setTeams] = useState();
@@ -49,7 +49,7 @@ function Game() {
 
   const listMatches = matches.map((match: any, index: any) => {
     return (
-      <Match forceRender={true} key={index} match={match} service={service} getPredictionsUser={getPredictionsUser} />
+      <Match forceRender={true} key={index} match={match} service={service} getPredictionsUser={getPredictionsUser} getAllUser={getAllUser} />
     );
   });
 
