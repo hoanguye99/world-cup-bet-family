@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
   font-family: 'Nunito-Regular';
   src: local('Nunito-Regular'), url(./assets/fonts/Nunito-Regular.ttf) format('truetype');
@@ -72,7 +76,7 @@
 }
 .container-fifa-rank{
  width: 50%;
- margin: auto;
+ margin: 30px auto;
  display: flex;
  flex-direction: column;
 }
@@ -93,11 +97,30 @@
   color: white;
   font-size: 20px;
 }
+
+.container-fifa-rank.table-special-01 {
+  width: 80%;
+}
+
+.container-fifa-rank.table-special-01 .ant-table-thead > tr > th {
+  color: black;
+  font-size: larger;
+  background: #F5F5F5 !important;
+  /* border: 1px solid black; */
+}
+.container-fifa-rank.table-special-01 .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #F5F5F5 !important;
+  /* border: 1px solid black; */
+}
+.container-fifa-rank.table-special-01 .ant-table-tbody > tr.ant-table-row:hover > td, .ant-table-tbody > tr > td.ant-table-cell-row-hover {
+  background: transparent !important;
+}
+
 .fifa-logo{
   margin: auto;
 }
 .matches{
-  margin: auto;
+  margin: 40px auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -127,7 +150,6 @@
 .container-match{
   position: relative;
   color: #81163b;
-  width: 20%;
   min-width: 297px;
   min-height: 297px;
   margin: 0 2%;
@@ -155,6 +177,13 @@
 .teams .ant-input-number{
   margin: auto !important;
 }
+.teams .has_not_played {
+  color: black;
+}
+.teams .has_played {
+  color: red;
+
+}
 .container-list-all-matches .ant-table{
   background: transparent !important;
   color: white;
@@ -177,7 +206,7 @@
 }
 .ant-modal-content .modal-my-result{
   width: 60%;
-  margin: auto;
+  margin: 1rem auto;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;

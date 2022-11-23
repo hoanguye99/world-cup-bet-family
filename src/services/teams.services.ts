@@ -1,5 +1,4 @@
 import axios from "axios";
-import Match from "../components/Match";
 
 
 
@@ -44,11 +43,14 @@ export class teamsService {
     return this.matches.filter((match:any)=>match.group === group)
   }
 
-  async updateMatch(token:string,UserId:string,MatchId:string,scores:any){
-    const data = await this.Api.patch(`/api/v1/users/${UserId}/matches/${MatchId}`,
+  async betScore(token:string,payload:any){
+    const data = await this.Api.post(`/api/v1/bet/score`,
     {
-      local_score : scores.local_score ? scores.local_score : 0,
-      visitor_score:scores.visitor_score ? scores.visitor_score : 0
+      match_id: payload.match_id,
+      localBet : payload.localBet ? payload.localBet : 0,
+      visitorBet:payload.visitorBet ? payload.visitorBet : 0,
+      betAmount: payload.betAmount
+
     },
     {
       headers: {
