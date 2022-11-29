@@ -146,7 +146,7 @@ function Game() {
       ),
     }, // remember to pass the key prop
     {
-      label: "Vòng loại",
+      label: "Vòng knock out",
       key: "Finals",
       children: (
         <div className="in-develop">

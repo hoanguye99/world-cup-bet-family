@@ -24,8 +24,8 @@ function HistoryBet(props: any) {
           win_bet: val.bets?.winBet?.value,
         },
         score_bet: {
-          local: val.bets?.scoreBet?.localBet,
-          visitor: val.bets?.scoreBet?.visitorBet,
+          local: val.bets?.scoreBet?.localBet ?? null,
+          visitor: val.bets?.scoreBet?.visitorBet ?? null,
         },
         betAmount:
           Number(val.bets?.winBet?.betAmount ?? 0) +
@@ -106,7 +106,7 @@ function HistoryBet(props: any) {
       title: "Đặt tỉ số",
       render: (score_bet: any) => (
         <div className="flex gap-1 text-sm md:text-base items-center text-white">
-          {score_bet.local && score_bet.visitor ? (
+          {score_bet.local !== null && score_bet.visitor !== null ? (
             <>
               <span className="text-center">{score_bet.local ?? 0}</span>
               <span className="text-center">-</span>
