@@ -70,7 +70,7 @@ function Diamgram(props: any) {
 
   return (
     <div className="w-full flex flex-col lg:grid lg:grid-cols-4 gap-5 p-5 items-center">
-      <div className="order-1 lg:order-2 col-span-1 text-white flex flex-col justify-center">
+      <div className="order-2 lg:order-2 col-span-1 text-white flex flex-col justify-center">
         <div className="grid grid-cols-1 gap-5">
           <div className="col-span-1 grid grid-cols-2 gap-2 gap-y-10">
             <ViewMatchGroup service={props.service} groupName={"A"} />
