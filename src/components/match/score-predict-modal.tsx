@@ -1,16 +1,16 @@
-import { Divider, InputNumber, Modal, notification, Table } from 'antd';
+import { Divider, InputNumber, Modal, notification, Table } from "antd";
 import {
   useGetAllUser,
   useGetPredictionsMatch,
   userMatchesKeys,
-} from '../../hooks/query/user-matches';
+} from "../../hooks/query/user-matches";
 import {
   UserPrediction,
   UserShort,
-} from '../../services/user-matches.services';
-import { useQueryClient } from '@tanstack/react-query';
-import { UseQueryResult } from '@tanstack/react-query';
-import { debounce } from "lodash"
+} from "../../services/user-matches.services";
+import { useQueryClient } from "@tanstack/react-query";
+import { UseQueryResult } from "@tanstack/react-query";
+import { debounce } from "lodash";
 // import { useContext } from 'react';
 // import { AuthContext } from '../../context/AuthContext';
 
@@ -30,7 +30,12 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
   // const { auth } = useContext(AuthContext);
 
   const dataSource = props.getPredictionsMatch.data
-    ?.filter((userPrediction) => userPrediction.bets?.scoreBet?.localBet || userPrediction.bets?.scoreBet?.visitorBet || userPrediction.bets?.scoreBet?.betAmount)
+    ?.filter(
+      (userPrediction) =>
+        userPrediction.bets?.scoreBet?.localBet ||
+        userPrediction.bets?.scoreBet?.visitorBet ||
+        userPrediction.bets?.scoreBet?.betAmount
+    )
     .map((userPrediction) => ({
       names: props.getAllUser.data?.find(
         (obj) => obj._id === userPrediction.user_id
@@ -43,19 +48,19 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
 
   const columns = [
     {
-      title: 'Bet thủ',
-      dataIndex: 'names',
-      key: 'names',
+      title: "Bet thủ",
+      dataIndex: "names",
+      key: "names",
     },
     {
-      title: 'Tỉ số',
-      dataIndex: 'score',
-      key: 'score',
+      title: "Tỉ số",
+      dataIndex: "score",
+      key: "score",
     },
     {
-      title: 'Cược',
-      dataIndex: 'value',
-      key: 'value',
+      title: "Cược",
+      dataIndex: "value",
+      key: "value",
     },
     // {
     //   dataIndex: 'name',
@@ -79,15 +84,16 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
           size="middle"
           min={0}
           max={100000}
-          defaultValue={props.matchPrediction?.bets?.scoreBet?.localBet}
+          defaultValue={props.matchPrediction?.bets?.scoreBet?.localBet ?? 0}
           // value={matchPrediction?.bets.scoreBet.localBet}
           disabled={new Date() > new Date(props.match.date)}
           onChange={(ev: any) => {
             const payload = {
               match_id: props.match._id,
               localBet: ev,
-              visitorBet: props.matchPrediction?.bets?.scoreBet?.visitorBet ?? null,
-              betAmount: props.matchPrediction?.bets?.scoreBet?.betAmount ?? null,
+              visitorBet:
+                props.matchPrediction?.bets?.scoreBet?.visitorBet ?? 0,
+              betAmount: props.matchPrediction?.bets?.scoreBet?.betAmount ?? 0,
             };
             props.service
               .betScore(props.token, payload)
@@ -96,11 +102,13 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
                   userMatchesKeys.getPredictionsMatch(props.match._id)
                 );
                 queryClient.invalidateQueries(userMatchesKeys.getAllUser());
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsUser());
+                queryClient.invalidateQueries(
+                  userMatchesKeys.getPredictionsUser()
+                );
               })
               .catch((err: any) => {
                 notification.error({
-                  message: 'Error',
+                  message: "Error",
                 });
               });
           }}
@@ -113,15 +121,15 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
           size="middle"
           min={0}
           max={100000}
-          defaultValue={props.matchPrediction?.bets?.scoreBet?.visitorBet}
+          defaultValue={props.matchPrediction?.bets?.scoreBet?.visitorBet ?? 0}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
           disabled={new Date() > new Date(props.match.date)}
           onChange={(ev: any) => {
             const payload = {
               match_id: props.match._id,
-              localBet: props.matchPrediction?.bets?.scoreBet?.localBet ?? null,
+              localBet: props.matchPrediction?.bets?.scoreBet?.localBet ?? 0,
               visitorBet: ev,
-              betAmount: props.matchPrediction?.bets?.scoreBet?.betAmount ?? null,
+              betAmount: props.matchPrediction?.bets?.scoreBet?.betAmount ?? 0,
             };
             props.service
               .betScore(props.token, payload)
@@ -130,11 +138,13 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
                   userMatchesKeys.getPredictionsMatch(props.match._id)
                 );
                 queryClient.invalidateQueries(userMatchesKeys.getAllUser());
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsUser());
+                queryClient.invalidateQueries(
+                  userMatchesKeys.getPredictionsUser()
+                );
               })
               .catch((err: any) => {
                 notification.error({
-                  message: 'Error',
+                  message: "Error",
                 });
               });
           }}
@@ -162,14 +172,18 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
           size="large"
           min={0}
           max={1000000}
-          defaultValue={props.matchPrediction?.bets?.scoreBet?.betAmount}
+          defaultValue={props.matchPrediction?.bets?.scoreBet?.betAmount ?? 0}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
-          disabled={new Date() > new Date(props.match.date) ||  (props.authCurrentScore !== undefined && props.authCurrentScore < 0)}
+          disabled={
+            new Date() > new Date(props.match.date) ||
+            (props.authCurrentScore !== undefined && props.authCurrentScore < 0)
+          }
           onChange={debounce((ev: any) => {
             const payload = {
               match_id: props.match._id,
-              localBet: props.matchPrediction?.bets?.scoreBet?.localBet ?? null,
-              visitorBet: props.matchPrediction?.bets?.scoreBet?.visitorBet ?? null,
+              localBet: props.matchPrediction?.bets?.scoreBet?.localBet ?? 0,
+              visitorBet:
+                props.matchPrediction?.bets?.scoreBet?.visitorBet ?? 0,
               betAmount: ev,
             };
             props.service
@@ -179,11 +193,13 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
                   userMatchesKeys.getPredictionsMatch(props.match._id)
                 );
                 queryClient.invalidateQueries(userMatchesKeys.getAllUser());
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsUser());
+                queryClient.invalidateQueries(
+                  userMatchesKeys.getPredictionsUser()
+                );
               })
               .catch((err: any) => {
                 notification.error({
-                  message: 'Error',
+                  message: "Error",
                 });
               });
           }, 400)}

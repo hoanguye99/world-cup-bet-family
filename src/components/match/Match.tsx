@@ -1,17 +1,24 @@
-import 'antd/dist/antd.css';
-import { useContext, useEffect, useState } from 'react';
-import { Button, InputNumber, Modal, notification } from 'antd';
-import { AuthContext } from '../../context/AuthContext';
-import { showError } from '../../alerts';
-import { useGetAllUser, useGetPredictionsMatch, useGetPredictionsUser } from '../../hooks/query/user-matches';
-import { UserPrediction, UserShort } from '../../services/user-matches.services';
-import ScorePredictModal from './score-predict-modal';
-import WinPredictModal from './win-predict-modal';
-import { UseQueryResult } from '@tanstack/react-query';
+import "antd/dist/antd.css";
+import { useContext, useEffect, useState } from "react";
+import { Button, InputNumber, Modal, notification } from "antd";
+import { AuthContext } from "../../context/AuthContext";
+import { showError } from "../../alerts";
+import {
+  useGetAllUser,
+  useGetPredictionsMatch,
+  useGetPredictionsUser,
+} from "../../hooks/query/user-matches";
+import {
+  UserPrediction,
+  UserShort,
+} from "../../services/user-matches.services";
+import ScorePredictModal from "./score-predict-modal";
+import WinPredictModal from "./win-predict-modal";
+import { UseQueryResult } from "@tanstack/react-query";
 
 interface MatchProps {
   getPredictionsUser: UseQueryResult<UserPrediction[], unknown>;
-  getAllUser: UseQueryResult<UserShort[], unknown>
+  getAllUser: UseQueryResult<UserShort[], unknown>;
   match: any;
   forceRender: boolean;
   service: any;
@@ -37,7 +44,7 @@ function Match(props: MatchProps) {
 
   return (
     <>
-      <div className="container-match">
+      <div className="container-match shadow-md">
         <svg
           width="297"
           height="297"
@@ -52,16 +59,28 @@ function Match(props: MatchProps) {
         </svg>
         <div className="content-match">
           <h3>
-            {new Date(props.match.date).toLocaleString('vi', {
-              weekday: 'long',
-              month: 'long',
-              day: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
+            {new Date(props.match.date).toLocaleString("vi", {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
             })}
           </h3>
           <div className="teams">
-            <img src={props.match.local_team.image} alt="" />
+            <div
+              className={`border-4 rounded-md ${
+                props.match.local_team.result === null
+                  ? "border-white"
+                  : props.match.local_team.result >
+                    props.match.visiting_team.result
+                  ? "border-green-500"
+                  : props.match.local_team.result ===
+                      props.match.visiting_team.result && "border-gray-300"
+              }`}
+            >
+              <img src={props.match.local_team.image} alt="" />
+            </div>
             {props.match.local_team.name}
             {props.match.has_played ? (
               <span className="has_played">
@@ -75,7 +94,19 @@ function Match(props: MatchProps) {
           </div>
           <h1>VS</h1>
           <div className="teams">
-            <img src={props.match.visiting_team.image} alt="" />
+            <div
+              className={`border-4 rounded-md ${
+                props.match.visiting_team.result === null
+                  ? "border-white"
+                  : props.match.local_team.result <
+                    props.match.visiting_team.result
+                  ? "border-green-500"
+                  : props.match.local_team.result ===
+                      props.match.visiting_team.result && "border-gray-300"
+              }`}
+            >
+              <img src={props.match.visiting_team.image} alt="" />
+            </div>
             {props.match.visiting_team.name}
             {props.match.has_played ? (
               <span className="has_played">
@@ -100,8 +131,10 @@ function Match(props: MatchProps) {
             ></path>
           </svg>
           <div className="my-2 flex justify-between items-center">
-
-            <Button  type="primary" onClick={() => setShowScorePredictModal(true)}>
+            <Button
+              type="primary"
+              onClick={() => setShowScorePredictModal(true)}
+            >
               Dự đoán tỉ số
             </Button>
             <Button type="default" onClick={() => setShowWinPredictModal(true)}>
