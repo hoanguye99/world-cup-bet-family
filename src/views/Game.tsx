@@ -2,7 +2,6 @@ import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { Layout, Tabs } from "antd";
 import "antd/dist/antd.css";
 import { useContext, useEffect, useState } from "react";
-import ReactAudioPlayer from "react-audio-player";
 import "../App.css";
 import logoworldcup from "../assets/world-cup-2022-logo.svg";
 import Diagram from "../components/Diagram";
@@ -19,7 +18,7 @@ import {
 } from "../hooks/query/user-matches";
 import { teamsService } from "../services/teams.services";
 import { Footer } from "./footer";
-import worldCupTheme from "../assets/wc-2010-theme.ogg";
+// import worldCupTheme from "../assets/wc-2010-theme.ogg";
 const { Header } = Layout;
 function Game() {
   const { auth } = useContext(AuthContext);

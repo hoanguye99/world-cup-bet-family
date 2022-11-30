@@ -1,5 +1,3 @@
-import ReactAudioPlayer from "react-audio-player";
-import worldCupTheme from "../assets/wc-2010-theme.ogg";
 export const Footer = () => {
   return (
     <div className="container mx-auto select-text">
@@ -21,7 +19,7 @@ export const Footer = () => {
                 <span className="bg-white select-none">Argentina</span> nào!
               </p>
             </div>
-            <ReactAudioPlayer
+            {/* <ReactAudioPlayer
               src={worldCupTheme}
               autoPlay={true}
               onPlay={() => console.log("play")}
@@ -30,7 +28,7 @@ export const Footer = () => {
               className="h-8"
               loop={true}
               preload="auto"
-            />
+            /> */}
           </div>
         </div>
         <div className="space-y-2 text-sm text-white/80 lg:px-3">
