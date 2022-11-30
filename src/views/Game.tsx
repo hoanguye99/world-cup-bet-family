@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import { useContext, useEffect, useState } from "react";
 import "../App.css";
 import logoworldcup from "../assets/world-cup-2022-logo.svg";
-import Diagram from "../components/Diagram";
+import Diagram from "../components/diagram";
 import FifaRank from "../components/FifaRank";
 import HistoryBet from "../components/History";
 import Match from "../components/match/Match";
@@ -35,7 +35,6 @@ function Game() {
   const [teams, setTeams] = useState();
   const [teamsSelect, setTeamsSelect] = useState();
   const [matches, setMatches] = useState([]);
-  const [group, setGroup] = useState("A");
 
   const getTeams = async () => {
     setTeams(await (await service.getTeams(auth.token)).teams);

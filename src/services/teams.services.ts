@@ -37,6 +37,7 @@ export class teamsService {
   }
 
   getMatchesByGroup(group: string) {
+    if (group === "") return [];
     return this.matches.filter((match: any) => match.group === group);
   }
 
