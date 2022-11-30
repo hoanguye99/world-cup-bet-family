@@ -130,7 +130,7 @@ function Game() {
       key: "players",
       children: <UsersRank getAllUser={getAllUser} />,
     },
-    { label: "FIFA", key: "fifa", children: <FifaRank teams={teams} /> }, // remember to pass the key prop
+    { label: "FIFA", key: "fifa", children: <FifaRank teams={teams} /> },
   ];
   const itemsB = [
     {
@@ -150,13 +150,6 @@ function Game() {
       key: "finals",
       children: (
         <>
-          {/* <div className="in-develop">
-           <h1>Đang phát triển</h1>
-           <img
-             src="https://media4.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif"
-             alt=""
-           />
-         </div> */}
           <ViewKnockOut
             service={service}
             getPredictionsUser={getPredictionsUser}
@@ -172,10 +165,6 @@ function Game() {
       children: (
         <>
           <Diagram service={service} />
-          {/* <img
-            src="https://media.ithethao.vn//uploads/2022/10/21/so-do-thi-dau-world-cup-2022-phan-nhanh-knock-out-vck-bong-da-the-gioi_124098.jpg"
-            className="w-96 p-10"
-          ></img> */}
         </>
       ),
     },
@@ -245,7 +234,7 @@ function Game() {
         <Podium service={service} teamsSelect={teamsSelect} />
       </div>
       <Tabs
-        className="md:p-3 tabs-group font-bold"
+        className="p-2 md:p-3 tabs-group font-bold"
         onChange={onChangeB}
         items={itemsB}
       />

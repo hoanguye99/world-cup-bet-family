@@ -13,34 +13,36 @@ interface UsersRankProps {
 
 function UsersRank(props: UsersRankProps) {
   const { auth } = useContext(AuthContext);
-  const [data, setData] = useState<UserShort[] | undefined>(undefined);
+  const [data, setData] = useState<any[] | undefined>(undefined);
   const formatter = new Intl.NumberFormat("vi-VN", {
     // style: "currency",
     currency: "VND",
     maximumFractionDigits: 2, // (causes 2500.99 to be printed as $2,501)
     notation: "compact",
   });
+
+  useEffect(() => {}, [data]);
   const columns = [
     {
       title: "Hạng",
-      dataIndex: "",
-      key: "indexs",
-      render: (value: any, record: any, index: number) => {
-        if (index === 0)
+      dataIndex: "index",
+      key: "index",
+      render: (value: any) => {
+        if (value === 1)
           return <img src={rank1} alt="" className="w-10 h-10" />;
-        if (index === 1)
+        if (value === 2)
           return <img src={rank2} alt="" className="w-10 h-10" />;
-        if (index === 2)
+        if (value === 3)
           return <img src={rank3} alt="" className="w-10 h-10" />;
         return (
-          <div className="text-center w-10 text-white text-lg">{index + 1}</div>
+          <div className="text-center w-10 text-white text-lg">{value}</div>
         );
       },
     },
     {
       title: "Bet thủ",
-      dataIndex: "names",
-      key: "names",
+      dataIndex: "name",
+      key: "name",
       render: (text: any) => <span className="text-white">{text}</span>,
     },
     {
@@ -48,31 +50,14 @@ function UsersRank(props: UsersRankProps) {
       dataIndex: "bets",
       key: "bets",
       render: (bets: any) => {
-        let countBets = 0;
-        let sumBets = 0;
-        sumBets = bets.reduce((sum: number, b: any) => {
-          return sum + getPoint(b);
-        }, 0);
-        countBets = bets.reduce((sum: number, b: any) => {
-          return sum + getCountBet(b);
-        }, 0);
-
-        return (
-          <span className="text-white md:pl-3">
-            {countBets > 0 ? ((sumBets / countBets) * 100).toFixed(0) : 0}%
-          </span>
-        );
+        return <span className="text-white md:pl-3">{bets}%</span>;
       },
     },
     {
       title: "Tích lũy",
       dataIndex: "score",
       key: "score",
-      render: (text: any) => (
-        <span className="text-white md:pl-3">
-          {text > 1000 ? formatter.format(Number(text)) : text}
-        </span>
-      ),
+      render: (text: any) => <span className="text-white md:pl-3">{text}</span>,
     },
   ];
   let getPoint = (val: any) => {
@@ -125,7 +110,26 @@ function UsersRank(props: UsersRankProps) {
   useEffect(() => {
     if (props.getAllUser.data) {
       setData(
-        props.getAllUser.data.sort((a: any, b: any) => b.score - a.score)
+        props.getAllUser.data
+          .sort((a: any, b: any) => b.score - a.score)
+          .map((e: any, index: number) => {
+            let countBets = 0;
+            let sumBets = 0;
+            sumBets = e.bets.reduce((sum: number, b: any) => {
+              return sum + getPoint(b);
+            }, 0);
+            countBets = e.bets.reduce((sum: number, b: any) => {
+              return sum + getCountBet(b);
+            }, 0);
+
+            return {
+              index: index + 1,
+              name: e.names,
+              score: formatter.format(Number(e.score)),
+              bets:
+                countBets > 0 ? ((sumBets / countBets) * 100).toFixed(0) : 0,
+            };
+          })
       );
     }
   }, [props.getAllUser.data]);

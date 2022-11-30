@@ -1,5 +1,6 @@
 import "antd/dist/antd.css";
 import { Ball, Spinner } from "./icon";
+import wc_cup from "../assets/wcup.png";
 function Diamgram(props: any) {
   const dataDemoRoundOf16 = [
     {
@@ -112,16 +113,13 @@ function Diamgram(props: any) {
         <ViewRound
           title={
             <div className="flex flex-col items-center justify-center">
-              <div className="bg-wcup bg-cover w-10 h-24"></div>
+              <img src={wc_cup} className="w-10 h-24"></img>
               <div>Chung kết</div>
             </div>
           }
           matchs={props.service.getMatchesByGroup("FINAL")}
           className="grid grid-cols-1 items-center gap-1 content-center "
         />
-        {/* <div className="flex items-center justify-center">
-          <img src={wcup} className="w-10" />
-        </div> */}
       </div>
     </div>
   );
@@ -134,7 +132,7 @@ function ViewMatchGroup(props: any) {
         {props.service
           .getMatchesByGroup(props.groupName)
           .map((match: any, index: any) => (
-            <ViewVS match={match} />
+            <ViewVS key={"viewMatchGrounp-" + index} match={match} />
           ))}
       </div>
     </div>
@@ -155,6 +153,7 @@ function ViewRound(props: any) {
       >
         {props.matchs?.map((match: any, index: any) => (
           <ViewVS
+            key={`viewRound-${index}`}
             match={match}
             className={"border border-white p-3 rounded-md bg-[#0202022a]"}
           />
@@ -165,15 +164,8 @@ function ViewRound(props: any) {
 }
 
 function ViewVS(props: any) {
-  // const date =
-  //   new Date(props.match?.date ?? "").toLocaleString("vi", {
-  //     month: "numeric",
-  //     day: "numeric",
-  //   }) ?? "";
   return (
     <div className="flex flex-col gap-0 items-center justify-center mb-2">
-      {/* <span className="text-xd">{date === "Invalid Date" ? "" : date}</span> */}
-
       <div
         className={`grid grid-cols-5 mt-1 mb-2  items-center justify-center gap-1 ${props.className}`}
       >
