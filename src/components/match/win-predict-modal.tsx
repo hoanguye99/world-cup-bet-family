@@ -1,19 +1,18 @@
-import { Divider, InputNumber, Modal, notification, Table } from 'antd';
+import { Divider, InputNumber, Modal, notification, Table } from "antd";
 import {
   useGetAllUser,
   useGetPredictionsMatch,
   userMatchesKeys,
-} from '../../hooks/query/user-matches';
-import type { RadioChangeEvent } from 'antd';
-import { Radio } from 'antd';
+} from "../../hooks/query/user-matches";
+import type { RadioChangeEvent } from "antd";
+import { Radio } from "antd";
 import {
   UserPrediction,
   UserShort,
-} from '../../services/user-matches.services';
-import { useQueryClient } from '@tanstack/react-query';
-import { UseQueryResult } from '@tanstack/react-query';
-import { debounce } from "lodash"
-
+} from "../../services/user-matches.services";
+import { useQueryClient } from "@tanstack/react-query";
+import { UseQueryResult } from "@tanstack/react-query";
+import { debounce } from "lodash";
 
 interface WinPredictModalProps {
   token: any;
@@ -24,25 +23,29 @@ interface WinPredictModalProps {
   closeModal: () => void;
   getAllUser: UseQueryResult<UserShort[], unknown>;
   getPredictionsMatch: UseQueryResult<UserPrediction[], unknown>;
-  authCurrentScore: number | undefined
+  authCurrentScore: number | undefined;
 }
 
 const WinPredictModal = (props: WinPredictModalProps) => {
   const queryClient = useQueryClient();
 
   const dataSource = props.getPredictionsMatch.data
-    ?.filter((userPrediction) => userPrediction.bets?.winBet?.value || userPrediction.bets?.winBet?.betAmount)
+    ?.filter(
+      (userPrediction) =>
+        userPrediction.bets?.winBet?.value ||
+        userPrediction.bets?.winBet?.betAmount
+    )
     .map((userPrediction) => {
       let teamName;
       switch (userPrediction.bets?.winBet?.value) {
-        case 'local':
+        case "local":
           teamName = props.match.local_team.name;
           break;
-        case 'visitor':
+        case "visitor":
           teamName = props.match.visiting_team.name;
           break;
-        case 'tie':
-          teamName = 'Hòa';
+        case "tie":
+          teamName = "Hòa";
           // code block
           break;
       }
@@ -58,19 +61,19 @@ const WinPredictModal = (props: WinPredictModalProps) => {
 
   const columns = [
     {
-      title: 'Bet thủ',
-      dataIndex: 'names',
-      key: 'names',
+      title: "Bet thủ",
+      dataIndex: "names",
+      key: "names",
     },
     {
-      title: 'Kết quả',
-      dataIndex: 'result',
-      key: 'result',
+      title: "Kết quả",
+      dataIndex: "result",
+      key: "result",
     },
     {
-      title: 'Cược',
-      dataIndex: 'value',
-      key: 'value',
+      title: "Cược",
+      dataIndex: "value",
+      key: "value",
     },
     // {
     //   dataIndex: 'name',
@@ -80,7 +83,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
   ];
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log('radio checked', e.target.value);
+    console.log("radio checked", e.target.value);
     const payload = {
       match_id: props.match._id,
       value: e.target.value,
@@ -97,7 +100,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
       })
       .catch((err: any) => {
         notification.error({
-          message: 'Error',
+          message: "Error",
         });
       });
   };
@@ -116,20 +119,20 @@ const WinPredictModal = (props: WinPredictModalProps) => {
         disabled={new Date() > new Date(props.match.date)}
         defaultValue={props.matchPrediction?.bets?.winBet?.value}
       >
-        <Radio className="flex items-center gap-5" value={'local'}>
+        <Radio className="flex items-center gap-5" value={"local"}>
           <div className="flex items-center gap-5">
             <img src={props.match.local_team.image} alt="" />
             <h2>{props.match.local_team.name}</h2>
           </div>
         </Radio>
 
-        <Radio className="flex items-center gap-5" value={'visitor'}>
+        <Radio className="flex items-center gap-5" value={"visitor"}>
           <div className="flex items-center gap-5">
             <img src={props.match.visiting_team.image} alt="" />
             <h2> {props.match.visiting_team.name} </h2>
           </div>
         </Radio>
-        <Radio className="flex items-center gap-5" value={'tie'}>
+        <Radio className="flex items-center gap-5" value={"tie"}>
           <div className="flex items-center gap-5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -172,13 +175,16 @@ const WinPredictModal = (props: WinPredictModalProps) => {
           size="large"
           min={0}
           max={1000000}
-          defaultValue={props.matchPrediction?.bets?.winBet?.betAmount}
+          defaultValue={props.matchPrediction?.bets?.winBet?.betAmount ?? 0}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
-          disabled={new Date() > new Date(props.match.date) ||  (props.authCurrentScore !== undefined && props.authCurrentScore < 0)}
+          disabled={
+            new Date() > new Date(props.match.date) ||
+            (props.authCurrentScore !== undefined && props.authCurrentScore < 0)
+          }
           onChange={debounce((ev: any) => {
             const payload = {
               match_id: props.match._id,
-              value: props.matchPrediction?.bets?.winBet?.value ?? null,
+              value: props.matchPrediction?.bets?.winBet?.value ?? "tie",
               betAmount: ev,
             };
             props.service
@@ -188,11 +194,13 @@ const WinPredictModal = (props: WinPredictModalProps) => {
                   userMatchesKeys.getPredictionsMatch(props.match._id)
                 );
                 queryClient.invalidateQueries(userMatchesKeys.getAllUser());
-                queryClient.invalidateQueries(userMatchesKeys.getPredictionsUser());
+                queryClient.invalidateQueries(
+                  userMatchesKeys.getPredictionsUser()
+                );
               })
               .catch((err: any) => {
                 notification.error({
-                  message: 'Error',
+                  message: "Error",
                 });
               });
           }, 400)}

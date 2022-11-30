@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+*,
+::before,
+::after {
+  border-width: 0;
+  border-style: solid;
+  /* border-color: theme('borderColor.DEFAULT', currentColor); */
+}
+
+
 @font-face {
   font-family: 'Nunito-Regular';
   src: local('Nunito-Regular'), url(./assets/fonts/Nunito-Regular.ttf) format('truetype');
@@ -41,8 +50,10 @@
 .App{
   min-height: 100vh;
   /* background-color: #8b1638; */
-  background-color: #020f2a;
+  /* background-color: #020f2a; */
   min-width: 320px;
+  background-image: url(./assets/qatar_wc.jpg);
+
   
   font-family: Nunito-Regular;
 }
@@ -64,7 +75,7 @@
   justify-content: space-evenly;
 }
 .container-podium{
-  background: url(./assets/podium.png) no-repeat bottom left;
+  background: url(./assets/podium1.png) no-repeat bottom left;
   background-size: 100%;
   width: 40%;
   height: 40vh;
@@ -91,7 +102,8 @@
 }
 
 .container-fifa-rank .ant-table-tbody > tr.ant-table-row:hover > td, .ant-table-tbody > tr > td.ant-table-cell-row-hover {
-  background: #7d1030 !important;
+  background: #7d103159 !important;
+  
 }
 .container-fifa-rank a {
   color: white;
@@ -241,6 +253,7 @@
   .img-logo{
     display: none;
   }
+ 
   
 }
 
@@ -249,4 +262,13 @@
     height: 230px;
     width: 100%;
   }
+}
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: transparent;
+  border: transparent;
+  text-align: center;
+  color: #ffff;
+}
+.ant-select .ant-select-arrow {
+  color: #ffffff;
 }
