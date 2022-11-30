@@ -17,21 +17,9 @@ function HistoryBet(props: any) {
           visiting_img: val.match.visiting_team.image,
         },
         bet: {
-          local_img: val.match.local_team.image,
-          visiting_img: val.match.visiting_team.image,
           local_name: val.match.local_team.name,
           visiting_name: val.match.visiting_team.name,
           win_bet: val.bets?.winBet?.value,
-        },
-        score_bet: {
-          local: val.bets?.scoreBet?.localBet ?? null,
-          visitor: val.bets?.scoreBet?.visitorBet ?? null,
-        },
-        betAmount:
-          Number(val.bets?.winBet?.betAmount ?? 0) +
-          Number(val.bets?.scoreBet?.betAmount ?? 0),
-        result: {
-          has_played: val.match.has_played ?? false,
           betWin:
             val.match.has_played === false ||
             val.match.has_played === null ||
@@ -47,6 +35,10 @@ function HistoryBet(props: any) {
                   val.bets.winBet.value === "visitor")
               ? "Win"
               : "Lose",
+        },
+        score_bet: {
+          local: val.bets?.scoreBet?.localBet ?? null,
+          visitor: val.bets?.scoreBet?.visitorBet ?? null,
           betScore:
             val.match.has_played === undefined ||
             val.match.has_played === false ||
@@ -61,6 +53,12 @@ function HistoryBet(props: any) {
                   val.match.visiting_team.result
               ? "Win"
               : "Lose",
+        },
+        betAmount:
+          Number(val.bets?.winBet?.betAmount ?? 0) +
+          Number(val.bets?.scoreBet?.betAmount ?? 0),
+        result: {
+          has_played: val.match.has_played ?? false,
         },
       }));
     setPredictionsUser(arr);
@@ -99,7 +97,15 @@ function HistoryBet(props: any) {
       title: "Đặt",
       render: (bet: any) => (
         <div className="flex items-center text-sm md:text-base text-white">
-          <div className="text-center">
+          <div
+            className={`text-center ${
+              bet.betWin === "Win"
+                ? "text-green-500"
+                : bet.betWin === "Lose"
+                ? "text-gray-500"
+                : ""
+            }`}
+          >
             <span>{bet.win_bet === "local" && bet.local_name}</span>
             <span>{bet.win_bet === "visitor" && bet.visiting_name}</span>
             <span>{bet.win_bet === "tie" && "Hòa"}</span>
@@ -113,11 +119,19 @@ function HistoryBet(props: any) {
       render: (score_bet: any) => (
         <div className="flex gap-1 text-sm md:text-base items-center text-white">
           {score_bet.local !== null && score_bet.visitor !== null ? (
-            <>
+            <div
+              className={`text-center ${
+                score_bet.betScore === "Win"
+                  ? "text-green-500"
+                  : score_bet.betScore === "Lose"
+                  ? "text-gray-500"
+                  : ""
+              }`}
+            >
               <span className="text-center">{score_bet.local ?? 0}</span>
               <span className="text-center">-</span>
               <span className="text-center">{score_bet.visitor ?? 0}</span>
-            </>
+            </div>
           ) : (
             <></>
           )}
@@ -133,24 +147,24 @@ function HistoryBet(props: any) {
         </div>
       ),
     },
-    {
-      dataIndex: "result",
-      title: "Kết quả",
-      render: (text: any) => (
-        <div className="text-white uppercase text-sm md:text-base">
-          {!text.has_played && (
-            <div className="w-10">
-              <Spinner />
-            </div>
-          )}
-          {text.has_played && (
-            <div className="gap-1 break-words">
-              {text.betWin ?? "--"} / {text.betScore ?? "__"}
-            </div>
-          )}
-        </div>
-      ),
-    },
+    // {
+    //   dataIndex: "result",
+    //   title: "Kết quả",
+    //   render: (text: any) => (
+    //     <div className="text-white uppercase text-sm md:text-base">
+    //       {!text.has_played && (
+    //         <div className="w-10">
+    //           <Spinner />
+    //         </div>
+    //       )}
+    //       {text.has_played && (
+    //         <div className="gap-1 break-words">
+    //           {text.betWin ?? "--"} / {text.betScore ?? "__"}
+    //         </div>
+    //       )}
+    //     </div>
+    //   ),
+    // },
   ];
   return (
     <div className="container-fifa-rank">

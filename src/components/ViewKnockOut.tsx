@@ -1,7 +1,6 @@
 import Tabs from "antd/lib/tabs";
 import { useEffect, useState } from "react";
 import Match from "./match/Match";
-import liveIcon from "../assets/live-streaming-icon.png";
 export const ViewKnockOut = (props: any) => {
   const [matches, setMatches] = useState([]);
   const [group, setGroup] = useState("ROUND_OF_16");
@@ -24,6 +23,7 @@ export const ViewKnockOut = (props: any) => {
       />
     );
   });
+
   const itemsKnockOut = [
     {
       label: "Vòng 1/8",
@@ -51,18 +51,12 @@ export const ViewKnockOut = (props: any) => {
       children: <div className="matches">{listMatches}</div>,
     },
     {
-      label: (
-        <>
-          {/* <img src={liveIcon} className="w-5 bg-white p-[2px] rounded-full" />{" "} */}
-          Trực tiếp
-        </>
-      ),
-      key: "Stream",
+      label: "Hightlight",
+      key: "Hightlight",
       children: (
         <div className="w-full h-full">
           {/* <iframe
-            src="https://vtv.vn/truyen-hinh-truc-tuyen/vtv2.htm"
-            title="Live stream VTV2"
+            src="https://www.youtube.com/watch?v=2zNSgSzhBfM&ab_channel=Macklemore"
             className="w-full h-screen bg-white"
           ></iframe> */}
           <div className="in-develop">
