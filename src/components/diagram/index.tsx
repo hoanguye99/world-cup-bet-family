@@ -1,7 +1,7 @@
 import "antd/dist/antd.css";
 import { Ball, Spinner } from "../icon";
 import wc_cup from "../../assets/wcup.png";
-import { ViewMatchGroup, ViewVS } from "./view-vs";
+import { ViewMatchGroup, ViewRound, ViewVS } from "./view-vs";
 function Diamgram(props: any) {
   return (
     <div className="w-full flex flex-col lg:grid lg:grid-cols-4 gap-5 p-5 items-center">
@@ -60,30 +60,6 @@ function Diamgram(props: any) {
           matchs={props.getMatchesByGroup("FINAL")}
           className="grid grid-cols-1 items-center gap-1 content-center "
         />
-      </div>
-    </div>
-  );
-}
-
-function ViewRound(props: any) {
-  return (
-    <div className="mb-10">
-      <div className="text-xl text-center mb-10 font-bold uppercase">
-        {props.title ?? "Vòng..."}
-      </div>
-      <div
-        className={
-          props.className ??
-          `grid grid-cols-2  md:grid-cols-4 items-center gap-1 content-center`
-        }
-      >
-        {props.matchs?.map((match: any, index: any) => (
-          <ViewVS
-            key={`viewRound-${index}`}
-            match={match}
-            className={"border border-white p-3 rounded-md bg-[#0202022a]"}
-          />
-        ))}
       </div>
     </div>
   );
