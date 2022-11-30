@@ -184,7 +184,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
           onChange={debounce((ev: any) => {
             const payload = {
               match_id: props.match._id,
-              value: props.matchPrediction?.bets?.winBet?.value ?? null,
+              value: props.matchPrediction?.bets?.winBet?.value ?? "tie",
               betAmount: ev,
             };
             props.service

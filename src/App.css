@@ -50,8 +50,10 @@
 .App{
   min-height: 100vh;
   /* background-color: #8b1638; */
-  background-color: #020f2a;
+  /* background-color: #020f2a; */
   min-width: 320px;
+  background-image: url(./assets/qatar_wc.jpg);
+
   
   font-family: Nunito-Regular;
 }

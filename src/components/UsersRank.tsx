@@ -17,7 +17,8 @@ function UsersRank(props: UsersRankProps) {
   const formatter = new Intl.NumberFormat("vi-VN", {
     // style: "currency",
     currency: "VND",
-    maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    maximumFractionDigits: 2, // (causes 2500.99 to be printed as $2,501)
+    notation: "compact",
   });
   const columns = [
     {
@@ -40,20 +41,86 @@ function UsersRank(props: UsersRankProps) {
       title: "Bet thủ",
       dataIndex: "names",
       key: "names",
-      render: (text: any) => <a>{text}</a>,
+      render: (text: any) => <span className="text-white">{text}</span>,
+    },
+    {
+      title: "Tỉ lệ thắng",
+      dataIndex: "bets",
+      key: "bets",
+      render: (bets: any) => {
+        let countBets = 0;
+        let sumBets = 0;
+        sumBets = bets.reduce((sum: number, b: any) => {
+          return sum + getPoint(b);
+        }, 0);
+        countBets = bets.reduce((sum: number, b: any) => {
+          return sum + getCountBet(b);
+        }, 0);
+
+        return (
+          <span className="text-white md:pl-3">
+            {countBets > 0 ? ((sumBets / countBets) * 100).toFixed(0) : 0}%
+          </span>
+        );
+      },
     },
     {
       title: "Tích lũy",
       dataIndex: "score",
       key: "score",
       render: (text: any) => (
-        <a>
-          {text > 1000 ? formatter.format(Number(text / 1000)) + "K" : text}
-        </a>
+        <span className="text-white md:pl-3">
+          {text > 1000 ? formatter.format(Number(text)) : text}
+        </span>
       ),
     },
   ];
+  let getPoint = (val: any) => {
+    if (
+      val.match.has_played === undefined ||
+      val.match.has_played === false ||
+      val.match.has_played === null ||
+      val.match.local_team.result === null ||
+      val.match.visiting_team.result === null
+    )
+      return 0;
+    let point = 0;
+    if (
+      (val.match.local_team.result > val.match.visiting_team.result &&
+        (val.bets.winBet?.value ?? "") === "local") ||
+      (val.match.local_team.result === val.match.visiting_team.result &&
+        (val.bets.winBet?.value ?? "") === "tie") ||
+      (val.match.local_team.result < val.match.visiting_team.result &&
+        (val.bets.winBet?.value ?? "") === "visitor")
+    )
+      point++;
+    if (
+      val.bets?.scoreBet?.localBet === val.match.local_team.result &&
+      val.bets?.scoreBet?.visitorBet === val.match.visiting_team.result
+    )
+      point++;
 
+    return point;
+  };
+  let getCountBet = (val: any) => {
+    if (
+      val.match.has_played === false ||
+      val.match.has_played === null ||
+      val.match.local_team.result === null ||
+      val.match.visiting_team.result === null
+    )
+      return 0;
+    let point = 0;
+    if (val.bets.winBet?.value !== undefined || val.bets.winBet?.value !== null)
+      point++;
+    if (
+      val.bets?.scoreBet?.localBet !== undefined &&
+      val.bets?.scoreBet?.visitorBet !== undefined
+    )
+      point++;
+
+    return point;
+  };
   // setData(props.getAllUser.data.sort((a:any,b:any)=> b.score - a.score))
   useEffect(() => {
     if (props.getAllUser.data) {

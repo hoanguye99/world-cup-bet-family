@@ -31,6 +31,7 @@ function HistoryBet(props: any) {
           Number(val.bets?.winBet?.betAmount ?? 0) +
           Number(val.bets?.scoreBet?.betAmount ?? 0),
         result: {
+          has_played: val.match.has_played ?? false,
           betWin:
             val.match.has_played === false ||
             val.match.has_played === null ||
@@ -47,13 +48,17 @@ function HistoryBet(props: any) {
               ? "Win"
               : "Lose",
           betScore:
+            val.match.has_played === undefined ||
             val.match.has_played === false ||
             val.match.has_played === null ||
             val.match.local_team.result === null ||
             val.match.visiting_team.result === null
               ? null
+              : val.bets.scoreBet === undefined
+              ? null
               : val.bets?.scoreBet?.localBet === val.match.local_team.result &&
-                val.bets?.scoreBet?.visitorBet
+                val.bets?.scoreBet?.visitorBet ===
+                  val.match.visiting_team.result
               ? "Win"
               : "Lose",
         },
@@ -64,6 +69,7 @@ function HistoryBet(props: any) {
     // style: "currency",
     currency: "VND",
     maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    notation: "compact",
   });
   const columns = [
     // {
@@ -122,7 +128,7 @@ function HistoryBet(props: any) {
       dataIndex: "betAmount",
       title: "Điểm cược",
       render: (betAmount: any) => (
-        <div className="text-white text-xd md:text-base">
+        <div className="text-white md:text-base">
           {formatter.format(Number(betAmount ?? 0))}
         </div>
       ),
@@ -132,16 +138,16 @@ function HistoryBet(props: any) {
       title: "Kết quả",
       render: (text: any) => (
         <div className="text-white uppercase text-sm md:text-base">
-          {!(text.betWin && text.betScore) && (
+          {!text.has_played && (
             <div className="w-10">
               <Spinner />
             </div>
           )}
-          <div className="gap-1 break-words">
-            {text.betWin}
-            {text.betWin && text.betScore && "/"}
-            {text.betScore}
-          </div>
+          {text.has_played && (
+            <div className="gap-1 break-words">
+              {text.betWin ?? "--"} / {text.betScore ?? "__"}
+            </div>
+          )}
         </div>
       ),
     },

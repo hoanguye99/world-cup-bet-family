@@ -69,7 +69,7 @@ function Match(props: MatchProps) {
           </h3>
           <div className="teams">
             <div
-              className={`border-4 rounded-md ${
+              className={`border-4 rounded-md bg-white ${
                 props.match.local_team.result === null
                   ? "border-white"
                   : props.match.local_team.result >
@@ -79,7 +79,11 @@ function Match(props: MatchProps) {
                       props.match.visiting_team.result && "border-gray-300"
               }`}
             >
-              <img src={props.match.local_team.image} alt="" />
+              <img
+                src={props.match.local_team.image}
+                alt=""
+                className="w-10 "
+              />
             </div>
             {props.match.local_team.name}
             {props.match.has_played ? (
@@ -95,7 +99,7 @@ function Match(props: MatchProps) {
           <h1>VS</h1>
           <div className="teams">
             <div
-              className={`border-4 rounded-md ${
+              className={`border-4 rounded-md bg-white ${
                 props.match.visiting_team.result === null
                   ? "border-white"
                   : props.match.local_team.result <
@@ -105,7 +109,11 @@ function Match(props: MatchProps) {
                       props.match.visiting_team.result && "border-gray-300"
               }`}
             >
-              <img src={props.match.visiting_team.image} alt="" />
+              <img
+                src={props.match.visiting_team.image}
+                alt=""
+                className="w-10"
+              />
             </div>
             {props.match.visiting_team.name}
             {props.match.has_played ? (
@@ -134,10 +142,15 @@ function Match(props: MatchProps) {
             <Button
               type="primary"
               onClick={() => setShowScorePredictModal(true)}
+              disabled={props.match.local_team.name === undefined}
             >
               Dự đoán tỉ số
             </Button>
-            <Button type="default" onClick={() => setShowWinPredictModal(true)}>
+            <Button
+              type="default"
+              onClick={() => setShowWinPredictModal(true)}
+              disabled={props.match.local_team.name === undefined}
+            >
               Dự đoán kết quả
             </Button>
           </div>

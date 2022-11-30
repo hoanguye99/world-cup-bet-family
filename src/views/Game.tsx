@@ -1,24 +1,23 @@
-import "antd/dist/antd.css";
-import "../App.css";
-import { useContext, useEffect, useState } from "react";
-import { Tabs, Layout } from "antd";
-import Podium from "../components/Podium";
-import Match from "../components/match/Match";
-import FifaRank from "../components/FifaRank";
-import { teamsService } from "../services/teams.services";
-import logoworldcup from "../assets/world-cup-2022-logo.svg";
-import { AuthContext } from "../context/AuthContext";
-import AllMatches from "../components/AllMatches";
-import UsersRank from "../components/UsersRank";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
+import { Layout, Tabs } from "antd";
+import "antd/dist/antd.css";
+import { useContext, useEffect, useState } from "react";
+import "../App.css";
+import logoworldcup from "../assets/world-cup-2022-logo.svg";
+import Diagram from "../components/Diagram";
+import FifaRank from "../components/FifaRank";
+import HistoryBet from "../components/History";
+import Match from "../components/match/Match";
+import Podium from "../components/Podium";
+import UsersRank from "../components/UsersRank";
+import { ViewKnockOut } from "../components/ViewKnockOut";
+import { AuthContext } from "../context/AuthContext";
 import {
   useGetAllUser,
   useGetPredictionsUser,
 } from "../hooks/query/user-matches";
+import { teamsService } from "../services/teams.services";
 import { Footer } from "./footer";
-import Diagram from "../components/Diagram";
-import { match } from "assert";
-import HistoryBet from "../components/History";
 
 const { Header } = Layout;
 function Game() {
@@ -124,6 +123,7 @@ function Game() {
     //   ),
     // },
   ];
+
   const tabsRank = [
     {
       label: "Bet thủ",
@@ -146,16 +146,24 @@ function Game() {
       ),
     }, // remember to pass the key prop
     {
-      label: "Vòng knock out",
-      key: "Finals",
+      label: "Knock out",
+      key: "finals",
       children: (
-        <div className="in-develop">
-          <h1>Đang phát triển</h1>
-          <img
-            src="https://media4.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif"
-            alt=""
+        <>
+          {/* <div className="in-develop">
+           <h1>Đang phát triển</h1>
+           <img
+             src="https://media4.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif"
+             alt=""
+           />
+         </div> */}
+          <ViewKnockOut
+            service={service}
+            getPredictionsUser={getPredictionsUser}
+            getAllUser={getAllUser}
+            authCurrentScore={authCurrentScore}
           />
-        </div>
+        </>
       ),
     },
     {
@@ -203,7 +211,7 @@ function Game() {
     maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
   });
   return (
-    <div className="App bg-img bg-cover bg-center md:bg-left select-none">
+    <div className="App bg-cover bg-center md:bg-left select-none">
       <Header className="content-header">
         <h1 className="text-white">{auth.names}</h1>
         <div className="flex gap-8">
