@@ -2,112 +2,51 @@ import "antd/dist/antd.css";
 import { Ball, Spinner } from "./icon";
 import wc_cup from "../assets/wcup.png";
 function Diamgram(props: any) {
-  const dataDemoRoundOf16 = [
-    {
-      local_team: {
-        name: "A1",
-      },
-      visiting_team: {
-        name: "B2",
-      },
-    },
-    {
-      local_team: {
-        name: "C1",
-      },
-      visiting_team: {
-        name: "D2",
-      },
-    },
-    {
-      local_team: {
-        name: "E1",
-      },
-      visiting_team: {
-        name: "F2",
-      },
-    },
-    {
-      local_team: {
-        name: "G1",
-      },
-      visiting_team: {
-        name: "H2",
-      },
-    },
-    {
-      local_team: {
-        name: "H1",
-      },
-      visiting_team: {
-        name: "G2",
-      },
-    },
-    {
-      local_team: {
-        name: "F1",
-      },
-      visiting_team: {
-        name: "E2",
-      },
-    },
-    {
-      local_team: {
-        name: "B1",
-      },
-      visiting_team: {
-        name: "A2",
-      },
-    },
-    {
-      local_team: {
-        name: "D1",
-      },
-      visiting_team: {
-        name: "C2",
-      },
-    },
-  ];
-
   return (
     <div className="w-full flex flex-col lg:grid lg:grid-cols-4 gap-5 p-5 items-center">
       <div className="order-2 lg:order-2 col-span-1 text-white flex flex-col justify-center">
         <div className="grid grid-cols-1 gap-5">
           <div className="col-span-1 grid grid-cols-2 gap-2 gap-y-10">
-            <ViewMatchGroup service={props.service} groupName={"A"} />
-            <ViewMatchGroup service={props.service} groupName={"B"} />
-            <ViewMatchGroup service={props.service} groupName={"C"} />
-            <ViewMatchGroup service={props.service} groupName={"D"} />
+            {["A", "B", "C", "D"].map((val: string) => (
+              <ViewMatchGroup
+                key={"group-key-" + val}
+                getMatchesByGroup={props.getMatchesByGroup}
+                groupName={val}
+              />
+            ))}
           </div>
         </div>
       </div>
       <div className="order-3 lg:order-3 col-span-1 text-white flex flex-col justify-center">
         <div className="grid grid-cols-1 gap-5">
           <div className="col-span-1 grid grid-cols-2 gap-2 gap-y-10">
-            <ViewMatchGroup service={props.service} groupName={"E"} />
-            <ViewMatchGroup service={props.service} groupName={"F"} />
-            <ViewMatchGroup service={props.service} groupName={"G"} />
-            <ViewMatchGroup service={props.service} groupName={"H"} />
+            {["E", "F", "G", "H"].map((val: string) => (
+              <ViewMatchGroup
+                key={"group-key-" + val}
+                getMatchesByGroup={props.getMatchesByGroup}
+                groupName={val}
+              />
+            ))}
           </div>
         </div>
       </div>
       <div className="order-1 lg:order-2 col-span-2 text-white flex flex-col gap-10">
         <ViewRound
           title="Vòng 1/8"
-          matchs={props.service.getMatchesByGroup("ROUND_OF_16")}
+          matchs={props.getMatchesByGroup("ROUND_OF_16")}
         />
         <ViewRound
           title="Vòng tứ kết"
-          matchs={props.service.getMatchesByGroup("QUARTER_FINAL")}
+          matchs={props.getMatchesByGroup("QUARTER_FINAL")}
         />
         <ViewRound
           title="Vòng bán kết"
-          matchs={props.service.getMatchesByGroup("SEMI_FINAL")}
+          matchs={props.getMatchesByGroup("SEMI_FINAL")}
           className="grid grid-cols-2 items-center gap-1 content-center "
         />
         <ViewRound
           title="Tranh hạng ba"
-          matchs={props.service.getMatchesByGroup("THIRD_PLACE")}
+          matchs={props.getMatchesByGroup("THIRD_PLACE")}
           className="grid grid-cols-1 items-center gap-1 content-center "
         />
         <ViewRound
@@ -117,7 +56,7 @@ function Diamgram(props: any) {
               <div>Chung kết</div>
             </div>
           }
-          matchs={props.service.getMatchesByGroup("FINAL")}
+          matchs={props.getMatchesByGroup("FINAL")}
           className="grid grid-cols-1 items-center gap-1 content-center "
         />
       </div>
@@ -129,11 +68,12 @@ function ViewMatchGroup(props: any) {
     <div className="text-center mt-2">
       <div className="text-xl font-bold mb-2">Bảng {props.groupName}</div>
       <div className="border border-slate-50 rounded-md items-center p-2 bg-[#0202022a]">
-        {props.service
+        {props
           .getMatchesByGroup(props.groupName)
           .map((match: any, index: any) => (
             <ViewVS key={"viewMatchGrounp-" + index} match={match} />
           ))}
+        {JSON.stringify(props)}
       </div>
     </div>
   );

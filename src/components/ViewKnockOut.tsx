@@ -51,21 +51,21 @@ export const ViewKnockOut = (props: any) => {
       children: <div className="matches">{listMatches}</div>,
     },
     {
-      label: "Hightlight",
-      key: "Hightlight",
+      label: "Trực tiếp",
+      key: "Stream",
       children: (
         <div className="w-full h-full">
-          {/* <iframe
-            src="https://www.youtube.com/watch?v=2zNSgSzhBfM&ab_channel=Macklemore"
-            className="w-full h-screen bg-white"
-          ></iframe> */}
-          <div className="in-develop">
-            <h1>Đang phát triển</h1>
-            <img
-              src="https://media4.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif"
-              alt=""
-            />
-          </div>
+          <iframe
+            src="https://www.scorebat.com/embed/livescore/"
+            frameBorder="0"
+            width="600"
+            height="760"
+            allowFullScreen
+            allow="autoplay; fullscreen"
+            // style="width:100%;height:760px;overflow:hidden;display:block;"
+            className="w-full bg-transparent"
+          ></iframe>
+          {/* <script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = 'https://www.scorebat.com/embed/embed.js?v=arrv'; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'scorebat-jssdk'));</script> */}
         </div>
       ),
     },

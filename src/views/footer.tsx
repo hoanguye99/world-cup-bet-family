@@ -1,23 +1,10 @@
-import worldCupTheme from "../assets/wc-2010-theme.mp3";
+import ReactAudioPlayer from "react-audio-player";
+import worldCupTheme from "../assets/wc-2010-theme.ogg";
 export const Footer = () => {
   return (
     <div className="container mx-auto select-text">
       <div className="py-5 mt-16 border-t border-solid border-l-0 border-r-0 border-b-0 border-white/80" />
 
-      <audio
-        controls
-        className="h-8 bg-transparent"
-        autoPlay={true}
-        loop={true}
-        autoCorrect=""
-      >
-        <source
-          src={worldCupTheme}
-          type="audio/mpeg"
-          className="bg-transparent"
-        />
-        Your browser does not support the audio element.
-      </audio>
       <div className="flex gap-y-8 mb-8 flex-col md:flex-row md:justify-between items-center">
         <div className="flex">
           <div className="shrink-0 w-[120px] h-[160px] bg-center bg-no-repeat bg-contain bg-[url('./assets/world-cup-2022-logo.svg')]"></div>
@@ -34,6 +21,16 @@ export const Footer = () => {
                 <span className="bg-white select-none">Argentina</span> nào!
               </p>
             </div>
+            <ReactAudioPlayer
+              src={worldCupTheme}
+              autoPlay={true}
+              onPlay={() => console.log("play")}
+              onCanPlay={() => console.log("canplay")}
+              controls
+              className="h-8"
+              loop={true}
+              preload="auto"
+            />
           </div>
         </div>
         <div className="space-y-2 text-sm text-white/80 lg:px-3">
