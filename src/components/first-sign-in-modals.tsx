@@ -6,14 +6,17 @@ export const FirtSignInModal = (props: any) => {
   });
   return (
     <>
-      <div className="text-center text-xl">
+      <div className="bg-firework text-center text-xl">
         <div>Rất vui được gặp lại, {props.auth.names}</div>
         <div>Ngày mới đến với 1 món quà nhỏ</div>
         <div className="my-10 text-5xl font-extrabold text-green-400">
           + 20.000
         </div>
         <div>
-          Số dư hiện tại: {formatter.format(Number(props.authCurrentScore))}
+          Số dư hiện tại:{" "}
+          <span className="text-green-400 font-bold">
+            {formatter.format(Number(props.authCurrentScore))}
+          </span>
         </div>
       </div>
     </>

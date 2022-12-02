@@ -13,6 +13,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { UseQueryResult } from "@tanstack/react-query";
 import { debounce } from "lodash";
+import Countdown from "react-countdown";
 
 interface WinPredictModalProps {
   token: any;
@@ -66,7 +67,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
       key: "names",
     },
     {
-      title: "Kết quả",
+      title: "Đặt",
       dataIndex: "result",
       key: "result",
     },
@@ -206,7 +207,16 @@ const WinPredictModal = (props: WinPredictModalProps) => {
           }, 400)}
         />
       </div>
-      <h1 className="mt-6">Dự đoán ESS</h1>
+      <div className="count-down md:pl-10 font-bold text-center bg-white/10 backdrop-blur-sm w-fit m-auto px-16 py-5 rounded-lg">
+        <p className="text-xd blur-none">Close in</p>
+        <div className="mt-5">
+          {/* {countDown.days}:{countDown.hours}:{countDown.minutes}:
+          {countDown.seconds} */}
+
+          <Countdown date={new Date(props.match.date)} className="text-xl" />
+        </div>
+      </div>
+
       <div>
         <div className="container-fifa-rank table-special-01">
           <Table columns={columns} dataSource={dataSource} pagination={false} />

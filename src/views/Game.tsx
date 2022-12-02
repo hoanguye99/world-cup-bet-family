@@ -11,7 +11,6 @@ import { FirtSignInModal } from "../components/first-sign-in-modals";
 import HistoryBet from "../components/History";
 import Match from "../components/match/Match";
 import Podium from "../components/Podium";
-import { SpinWheel } from "../components/spin-wheel";
 import UsersRank from "../components/UsersRank";
 import { ViewKnockOut } from "../components/ViewKnockOut";
 import { AuthContext } from "../context/AuthContext";
@@ -275,19 +274,24 @@ function Game() {
         </div>
         <Footer />
       </div>
-      <Modal
-        footer={[]}
-        title="Tink Tink"
-        open={isModalOpen}
-        onOk={() => {
-          setIsModalOpen(false);
-        }}
-        onCancel={() => {
-          setIsModalOpen(false);
-        }}
-      >
-        <FirtSignInModal auth={auth} authCurrentScore={authCurrentScore} />
-      </Modal>
+      <>
+        <Modal
+          footer={[]}
+          title="Tink Tink"
+          open={isModalOpen}
+          onCancel={() => {
+            setIsModalOpen(false);
+          }}
+          className="modal-c"
+          // bodyStyle={{
+          //   backgroundImage: `url('/firework-6.gif')`,
+          //   backgroundSize: "cover",
+          // }}
+          // style={{ background: "!transparent" }}
+        >
+          <FirtSignInModal auth={auth} authCurrentScore={authCurrentScore} />
+        </Modal>
+      </>
       {/* <Modal
         footer={[]}
         title="Vòng quay may mắn"
