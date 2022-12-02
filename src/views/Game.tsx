@@ -1,24 +1,28 @@
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
-import { Layout, Tabs } from "antd";
+import { Layout, Modal, Tabs } from "antd";
 import "antd/dist/antd.css";
 import { useContext, useEffect, useState } from "react";
+import Countdown from "react-countdown";
 import "../App.css";
 import logoworldcup from "../assets/world-cup-2022-logo.svg";
 import Diagram from "../components/diagram";
 import FifaRank from "../components/FifaRank";
+import { FirtSignInModal } from "../components/first-sign-in-modals";
 import HistoryBet from "../components/History";
 import Match from "../components/match/Match";
 import Podium from "../components/Podium";
+import { SpinWheel } from "../components/spin-wheel";
 import UsersRank from "../components/UsersRank";
 import { ViewKnockOut } from "../components/ViewKnockOut";
 import { AuthContext } from "../context/AuthContext";
+
 import {
   useGetAllUser,
   useGetPredictionsUser,
 } from "../hooks/query/user-matches";
+
 import { teamsService } from "../services/teams.services";
 import { Footer } from "./footer";
-// import worldCupTheme from "../assets/wc-2010-theme.ogg";
 const { Header } = Layout;
 function Game() {
   const { auth } = useContext(AuthContext);
@@ -28,14 +32,15 @@ function Game() {
   const getAllUser = useGetAllUser(auth.token);
 
   const authCurrentScore = getAllUser.data?.find(
-    (obj) => obj._id === auth.document
+    (obj: any) => obj._id === auth.document
   )?.score;
 
   const [service, setService] = useState(new teamsService());
   const [teams, setTeams] = useState();
   const [teamsSelect, setTeamsSelect] = useState();
   const [matches, setMatches] = useState([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(auth.isAdded);
+  const [isModalSpinOpen, setIsModalSpinOpen] = useState(true);
   const getTeams = async () => {
     setTeams(await (await service.getTeams(auth.token)).teams);
     setTeamsSelect(await (await service.getTeams(auth.token)).teamsSelect);
@@ -52,11 +57,16 @@ function Game() {
   const onChangeRank = (key: any) => {
     console.log(key);
   };
+  const countDownDate = new Date("Dec 9, 2022 21:00:00").getTime();
+
   useEffect(() => {
     getTeams();
     getMatches();
   }, []);
-
+  // const sound = useSound(worldCupTheme);
+  // useEffect(() => {
+  //   if (sound) sound[0];
+  // }, [sound]);
   const listMatches = matches.map((match: any, index: any) => {
     return (
       <Match
@@ -129,7 +139,11 @@ function Game() {
       key: "players",
       children: <UsersRank getAllUser={getAllUser} />,
     },
-    { label: "FIFA", key: "fifa", children: <FifaRank teams={teams} /> },
+    {
+      label: "FIFA",
+      key: "fifa",
+      children: <FifaRank teams={teams}></FifaRank>,
+    },
   ];
   const itemsB = [
     {
@@ -146,7 +160,7 @@ function Game() {
     }, // remember to pass the key prop
     {
       label: "Knock out",
-      key: "finals",
+      key: "knock_out",
       children: (
         <>
           <ViewKnockOut
@@ -161,13 +175,7 @@ function Game() {
     {
       label: "Sơ đồ giải",
       key: "diagram",
-      children: (
-        <Diagram
-          getMatchesByGroup={(groupName: string) =>
-            service.getMatchesByGroup(groupName)
-          }
-        />
-      ),
+      children: <Diagram dataMatches={service.matches} />,
     },
 
     {
@@ -230,18 +238,69 @@ function Game() {
             </button>
           </div>
         </Header>
-
         <img src={logoworldcup} alt="" className="img-logo" />
         <div className="container-podium-rank">
           <Podium service={service} teamsSelect={teamsSelect} />
         </div>
+        {countDownDate > new Date().getTime() && (
+          <div className="count-down md:pl-10 text-yellow-300 font-bold text-center bg-white/10 backdrop-blur-sm w-fit m-auto px-16 py-10 rounded-lg">
+            <p className="text-sm blur-none">Close in</p>
+            <div className="mt-10">
+              {/* {countDown.days}:{countDown.hours}:{countDown.minutes}:
+          {countDown.seconds} */}
+
+              <Countdown date={countDownDate} className="text-xl md:text-3xl" />
+            </div>
+          </div>
+        )}
         <Tabs
           className="p-2 md:p-3 tabs-group font-bold"
           onChange={onChangeB}
           items={itemsB}
         />
+        <div>
+          {/* <audio
+            loop
+            autoPlay
+            onLoad={() => console.log("load")}
+            onPlay={() => {
+              console.log("play");
+            }}
+            onCanPlay={(e) => {}}
+            id="worldCupTheme"
+          >
+            <source src="/wc-2010-theme1.ogg" type="audio/ogg" />
+            <source src={worldCupTheme} type="audio/mpeg" />
+          </audio> */}
+        </div>
         <Footer />
       </div>
+      <Modal
+        footer={[]}
+        title="Tink Tink"
+        open={isModalOpen}
+        onOk={() => {
+          setIsModalOpen(false);
+        }}
+        onCancel={() => {
+          setIsModalOpen(false);
+        }}
+      >
+        <FirtSignInModal auth={auth} authCurrentScore={authCurrentScore} />
+      </Modal>
+      {/* <Modal
+        footer={[]}
+        title="Vòng quay may mắn"
+        open={isModalSpinOpen}
+        onOk={() => {
+          setIsModalSpinOpen(false);
+        }}
+        onCancel={() => {
+          setIsModalSpinOpen(false);
+        }}
+      >
+        <SpinWheel />
+      </Modal> */}
     </>
   );
 }

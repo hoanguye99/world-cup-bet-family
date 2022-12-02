@@ -20,24 +20,32 @@ interface IUserInfo {
   uid?: string | null;
   checking: boolean;
   logged: boolean;
+  timeLive: number;
+  isAdded: boolean;
 }
-const initialState: IUserInfo = localStorage.getItem("world-cup-bet-auth")
-  ? JSON.parse(localStorage.getItem("world-cup-bet-auth")!)
-  : {
-      token: null,
-      names: null,
-      document: null,
-      score: null,
-      selectedTeams: {
-        champion: null,
-        runner_up: null,
-        third_place: null,
-      },
-      matchesResults: undefined,
-      uid: null,
-      checking: true,
-      logged: false,
-    };
+const date = new Date();
+const initialState: IUserInfo =
+  localStorage.getItem("world-cup-bet-auth") &&
+  (JSON.parse(localStorage.getItem("world-cup-bet-auth")!)?.timeLive ?? 0) >
+    date.getTime()
+    ? JSON.parse(localStorage.getItem("world-cup-bet-auth")!)
+    : {
+        token: null,
+        names: null,
+        document: null,
+        score: null,
+        selectedTeams: {
+          champion: null,
+          runner_up: null,
+          third_place: null,
+        },
+        matchesResults: undefined,
+        uid: null,
+        checking: true,
+        logged: false,
+        timeLive: 0,
+        isAdded: false,
+      };
 
 const stateReducer = (state: IUserInfo, action: any) => {
   switch (action.type) {
@@ -76,6 +84,7 @@ const useAuthState = () => {
         selected_teams,
         matches_results,
         logged,
+        isAdded,
       } = resp!.data;
       localStorage.setItem(
         "world-cup-bet-auth",
@@ -88,6 +97,8 @@ const useAuthState = () => {
           score: score,
           selectedTeams: selected_teams,
           matchesResults: matches_results,
+          timeLive: date.getTime() + 59 * 60 * 1000,
+          isAdded: false,
         })
       );
       authDispatch({
@@ -101,6 +112,7 @@ const useAuthState = () => {
           score: score,
           selectedTeams: selected_teams,
           matchesResults: matches_results,
+          isAdded: isAdded,
         },
       });
       return { ok: true };

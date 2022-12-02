@@ -1,6 +1,5 @@
 import { Table } from "antd";
 import "antd/dist/antd.css";
-import { useEffect, useState } from "react";
 import rank1 from "../assets/rank1.png";
 import rank2 from "../assets/rank2.png";
 import rank3 from "../assets/rank3.png";

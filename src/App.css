@@ -23,6 +23,10 @@
   font-family: 'Nunito-SemiBold';
   src: local('Nunito-SemiBold'), url(./assets/fonts/Nunito-SemiBold.ttf) format('truetype');
 }
+@font-face {
+  font-family: 'Font-Clock';
+  src: local('Font-Clock'), url(./assets/fonts/font-clock.ttf) format('truetype');
+}
 .login{
   min-height: 100vh;
   background-color: #eeeee5;
@@ -85,11 +89,15 @@
   align-items: flex-end;
   margin-left: 2%;
 }
+.count-down{
+  font-family: 'Font-Clock';
+}
 .container-fifa-rank{
  width: 50%;
  margin: 30px auto;
  display: flex;
  flex-direction: column;
+ text-align: center;
 }
 .container-fifa-rank .ant-table {
   background: transparent !important;
@@ -118,10 +126,12 @@
   color: black;
   font-size: larger;
   background: #F5F5F5 !important;
+  text-align: center;
   /* border: 1px solid black; */
 }
 .container-fifa-rank.table-special-01 .ant-table-tbody > tr > td {
   border-bottom: 1px solid #F5F5F5 !important;
+  text-align: center;
   /* border: 1px solid black; */
 }
 .container-fifa-rank.table-special-01 .ant-table-tbody > tr.ant-table-row:hover > td, .ant-table-tbody > tr > td.ant-table-cell-row-hover {
@@ -208,6 +218,7 @@
 }
 .ant-table-thead > tr > th{
   color: white;
+  text-align: center;
 }
 .tabs-group .ant-tabs-tab {
   color: rgba(255, 255, 255, 0.85) !important;
@@ -272,3 +283,8 @@
 .ant-select .ant-select-arrow {
   color: #ffffff;
 }
+.ant-spin-dot-item {
+  background-color: #ff6c8a;
+}
+
+

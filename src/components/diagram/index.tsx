@@ -1,8 +1,16 @@
 import "antd/dist/antd.css";
-import { Ball, Spinner } from "../icon";
+import { useEffect, useState } from "react";
 import wc_cup from "../../assets/wcup.png";
-import { ViewMatchGroup, ViewRound, ViewVS } from "./view-vs";
+import { ViewMatchGroup, ViewRound } from "./view-vs";
 function Diamgram(props: any) {
+  const [data, setData] = useState([...props.dataMatches]);
+  useEffect(() => {
+    setData([...props.dataMatches]);
+  }, [props.dataMatches]);
+  const getMatchesByGroup = (group: string) => {
+    if (group === "") return [];
+    return data.filter((match: any) => match.group === group);
+  };
   return (
     <div className="w-full flex flex-col lg:grid lg:grid-cols-4 gap-5 p-5 items-center">
       <div className="order-2 lg:order-2 col-span-1 text-white flex flex-col justify-center">
@@ -11,7 +19,7 @@ function Diamgram(props: any) {
             {["A", "B", "C", "D"].map((val: string) => (
               <ViewMatchGroup
                 key={"group-key-" + val}
-                getMatches={props.getMatchesByGroup(val)}
+                getMatches={getMatchesByGroup(val)}
                 groupName={val}
               />
             ))}
@@ -24,7 +32,7 @@ function Diamgram(props: any) {
             {["E", "F", "G", "H"].map((val: string) => (
               <ViewMatchGroup
                 key={"group-key-" + val}
-                getMatches={props.getMatchesByGroup(val)}
+                getMatches={getMatchesByGroup(val)}
                 groupName={val}
               />
             ))}
@@ -32,22 +40,19 @@ function Diamgram(props: any) {
         </div>
       </div>
       <div className="order-1 lg:order-2 col-span-2 text-white flex flex-col gap-10">
-        <ViewRound
-          title="Vòng 1/8"
-          matchs={props.getMatchesByGroup("ROUND_OF_16")}
-        />
+        <ViewRound title="Vòng 1/8" matchs={getMatchesByGroup("ROUND_OF_16")} />
         <ViewRound
           title="Vòng tứ kết"
-          matchs={props.getMatchesByGroup("QUARTER_FINAL")}
+          matchs={getMatchesByGroup("QUARTER_FINAL")}
         />
         <ViewRound
           title="Vòng bán kết"
-          matchs={props.getMatchesByGroup("SEMI_FINAL")}
+          matchs={getMatchesByGroup("SEMI_FINAL")}
           className="grid grid-cols-2 items-center gap-1 content-center "
         />
         <ViewRound
           title="Tranh hạng ba"
-          matchs={props.getMatchesByGroup("THIRD_PLACE")}
+          matchs={getMatchesByGroup("THIRD_PLACE")}
           className="grid grid-cols-1 items-center gap-1 content-center "
         />
         <ViewRound
@@ -57,7 +62,7 @@ function Diamgram(props: any) {
               <div>Chung kết</div>
             </div>
           }
-          matchs={props.getMatchesByGroup("FINAL")}
+          matchs={getMatchesByGroup("FINAL")}
           className="grid grid-cols-1 items-center gap-1 content-center "
         />
       </div>

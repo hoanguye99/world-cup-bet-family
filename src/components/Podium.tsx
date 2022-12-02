@@ -14,7 +14,7 @@ function Podium(props: any) {
     auth.selectedTeams["third_place"]
   );
   const [disabledInput, setDisabledInput] = useState(
-    new Date() > new Date("dec 25 2022 0:00")
+    new Date() > new Date("dec 9 2022 21:00")
   );
 
   const handleChangeSecond = (value: any) => {

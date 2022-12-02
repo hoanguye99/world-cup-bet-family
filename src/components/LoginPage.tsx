@@ -1,13 +1,11 @@
-import { useContext, useState } from "react";
+import { Button, Form, Input, Modal, notification } from "antd";
 import "antd/dist/antd.css";
-import { useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { Button, Checkbox, Form, Input, Modal, notification } from "antd";
-import ModalUserRegister from "./ModalUserRegister";
+import { useContext, useState } from "react";
 import { showError } from "../alerts";
+import { AuthContext } from "../context/AuthContext";
+import ModalUserRegister from "./ModalUserRegister";
 
 function LoginPage() {
-  let navigate = useNavigate();
   const { signin } = useContext(AuthContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);

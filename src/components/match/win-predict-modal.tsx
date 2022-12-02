@@ -87,7 +87,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
     const payload = {
       match_id: props.match._id,
       value: e.target.value,
-      betAmount: props.matchPrediction?.bets?.winBet?.betAmount ?? null,
+      betAmount: props.matchPrediction?.bets?.winBet?.betAmount ?? 0,
     };
     props.service
       .betWinner(props.token, payload)
@@ -117,7 +117,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
         className="w-full flex flex-col items-center gap-6"
         onChange={onChange}
         disabled={new Date() > new Date(props.match.date)}
-        defaultValue={props.matchPrediction?.bets?.winBet?.value}
+        defaultValue={props.matchPrediction?.bets?.winBet?.value ?? "tie"}
       >
         <Radio className="flex items-center gap-5" value={"local"}>
           <div className="flex items-center gap-5">
@@ -173,7 +173,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
         </h2>
         <InputNumber
           size="large"
-          min={0}
+          min={1000}
           max={1000000}
           defaultValue={props.matchPrediction?.bets?.winBet?.betAmount ?? 0}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
@@ -185,7 +185,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
             const payload = {
               match_id: props.match._id,
               value: props.matchPrediction?.bets?.winBet?.value ?? "tie",
-              betAmount: ev,
+              betAmount: ev ?? 10000,
             };
             props.service
               .betWinner(props.token, payload)
