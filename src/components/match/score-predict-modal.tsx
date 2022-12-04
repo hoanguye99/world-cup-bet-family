@@ -11,6 +11,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { UseQueryResult } from "@tanstack/react-query";
 import { debounce } from "lodash";
+import Countdown from "react-countdown";
 // import { useContext } from 'react';
 // import { AuthContext } from '../../context/AuthContext';
 
@@ -170,8 +171,7 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
         </h2>
         <InputNumber
           size="large"
-          min={0}
-          max={1000000}
+          min={1000}
           defaultValue={props.matchPrediction?.bets?.scoreBet?.betAmount ?? 0}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
           disabled={
@@ -204,6 +204,15 @@ const ScorePredictModal = (props: ScorePredictModalProps) => {
               });
           }, 400)}
         />
+      </div>
+      <div className="count-down font-bold text-center bg-white/10 w-fit m-auto rounded-lg">
+        <p className="text-xd blur-none">Close in</p>
+        <div className="mt-5">
+          {/* {countDown.days}:{countDown.hours}:{countDown.minutes}:
+          {countDown.seconds} */}
+
+          <Countdown date={new Date(props.match.date)} className="text-xl" />
+        </div>
       </div>
       <h1 className="mt-6">Dự đoán ESS</h1>
       <div>

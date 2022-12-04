@@ -175,7 +175,6 @@ const WinPredictModal = (props: WinPredictModalProps) => {
         <InputNumber
           size="large"
           min={1000}
-          max={1000000}
           defaultValue={props.matchPrediction?.bets?.winBet?.betAmount ?? 0}
           // value={matchPrediction?.bets.scoreBet.visitorBet}
           disabled={
@@ -207,7 +206,7 @@ const WinPredictModal = (props: WinPredictModalProps) => {
           }, 400)}
         />
       </div>
-      <div className="count-down md:pl-10 font-bold text-center bg-white/10 backdrop-blur-sm w-fit m-auto px-16 py-5 rounded-lg">
+      <div className="count-down font-bold text-center bg-white/10 w-fit m-auto rounded-lg">
         <p className="text-xd blur-none">Close in</p>
         <div className="mt-5">
           {/* {countDown.days}:{countDown.hours}:{countDown.minutes}:
